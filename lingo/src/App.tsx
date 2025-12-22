@@ -1175,20 +1175,13 @@ const AbcView = ({ setActiveTab }) => {
 
   const playSound = (letter) => {
     window.speechSynthesis.cancel();
-    // Use explicit spoken names for letters to avoid TTS announcing "capital A" on some mobile engines.
-    const locale = (navigator && navigator.language) || 'en-US';
-    const zName = /en-(GB|AU|NZ|IE)/i.test(locale) ? 'zed' : 'zee';
-    const letterNames = {
-      A: 'ay', B: 'bee', C: 'see', D: 'dee', E: 'ee', F: 'ef', G: 'gee', H: 'aitch',
-      I: 'eye', J: 'jay', K: 'kay', L: 'el', M: 'em', N: 'en', O: 'oh', P: 'pee',
-      Q: 'cue', R: 'ar', S: 'ess', T: 'tee', U: 'you', V: 'vee', W: 'double you', X: 'ex', Y: 'why', Z: zName
-    };
-
-    const textToSpeak = letterNames[letter] || letter.toLowerCase();
+    // Speak the lowercase letter to avoid some mobile voices announcing "capital A"
+    const textToSpeak = letter.toLowerCase();
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
     utterance.lang = 'en-US';
     utterance.rate = 0.9;
-    utterance.pitch = 1.0;
+    // Slightly increase pitch on small devices to make single-letter sound clearer
+    utterance.pitch = 1.05;
     window.speechSynthesis.speak(utterance);
   };
 

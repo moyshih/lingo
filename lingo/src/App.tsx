@@ -1175,12 +1175,18 @@ const AbcView = ({ setActiveTab }) => {
 
   const playSound = (letter) => {
     window.speechSynthesis.cancel();
-    // Speak the lowercase letter to avoid some mobile voices announcing "capital A"
-    const textToSpeak = letter.toLowerCase();
+    // Use a phonetic / spoken form for each letter so TTS reads e.g. "aye" for A, "bee" for B
+    const phoneticMap = {
+      A: 'aye', B: 'bee', C: 'see', D: 'dee', E: 'ee', F: 'ef', G: 'gee', H: 'aitch',
+      I: 'eye', J: 'jay', K: 'kay', L: 'el', M: 'em', N: 'en', O: 'oh', P: 'pee',
+      Q: 'cue', R: 'ar', S: 'ess', T: 'tee', U: 'you', V: 'vee', W: 'double you',
+      X: 'ex', Y: 'why', Z: 'zed'
+    };
+    const textToSpeak = phoneticMap[(letter || '').toUpperCase()] || letter;
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
+    // Use English; device TTS will pronounce the phonetic words correctly
     utterance.lang = 'en-US';
     utterance.rate = 0.9;
-    // Slightly increase pitch on small devices to make single-letter sound clearer
     utterance.pitch = 1.05;
     window.speechSynthesis.speak(utterance);
   };

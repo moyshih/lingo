@@ -16,13 +16,18 @@ const MOCK_DB = {
       title: "יסודות",
       icon: "🌱",
       color: "bg-green-500",
-      totalQuestions: 5,
+      totalQuestions: 10,
       words: [
         { id: 1, en: "Hello", he: "שלום", options: ["שלום", "תודה", "להתראות", "בוקר"] },
         { id: 2, en: "Thank you", he: "תודה", options: ["סליחה", "בבקשה", "תודה", "כן"] },
         { id: 3, en: "Yes", he: "כן", options: ["לא", "כן", "אולי", "מחר"] },
         { id: 4, en: "No", he: "לא", options: ["כן", "תמיד", "לא", "לפעמים"] },
         { id: 5, en: "Good morning", he: "בוקר טוב", options: ["לילה טוב", "ערב טוב", "בוקר טוב", "יום טוב"] },
+        { id: 106, en: "Please", he: "בבקשה", options: ["תודה", "בבקשה", "סליחה", "שלום"] },
+        { id: 107, en: "Sorry", he: "סליחה", options: ["בבקשה", "סליחה", "תודה", "שלום"] },
+        { id: 108, en: "Goodbye", he: "להתראות", options: ["שלום", "להתראות", "בוקר", "לילה"] },
+        { id: 109, en: "Help", he: "עזרה", options: ["עזרה", "משפחה", "חבר", "בית"] },
+        { id: 110, en: "Friend", he: "חבר", options: ["מורה", "חבר", "בן משפחה", "שכן"] },
       ]
     },
     {
@@ -30,13 +35,18 @@ const MOCK_DB = {
       title: "אוכל ושתייה",
       icon: "🍎",
       color: "bg-orange-500",
-      totalQuestions: 5,
+      totalQuestions: 10,
       words: [
         { id: 6, en: "Apple", he: "תפוח", options: ["תפוז", "תפוח", "בננה", "אגס"] },
         { id: 7, en: "Water", he: "מים", options: ["לחם", "יין", "מים", "חלב"] },
         { id: 8, en: "Bread", he: "לחם", options: ["לחם", "חמאה", "גבינה", "ביצה"] },
         { id: 9, en: "Coffee", he: "קפה", options: ["תה", "מיץ", "קפה", "שוקו"] },
         { id: 10, en: "Chicken", he: "עוף", options: ["בקר", "דג", "עוף", "כבש"] },
+        { id: 111, en: "Milk", he: "חלב", options: ["חלב", "מים", "מיץ", "יין"] },
+        { id: 112, en: "Juice", he: "מיץ", options: ["קולה", "מיץ", "חלב", "שייק"] },
+        { id: 113, en: "Cheese", he: "גבינה", options: ["גבינה", "לחם", "חלב", "ביצה"] },
+        { id: 114, en: "Egg", he: "ביצה", options: ["ביצה", "לחם", "חמאה", "גבינה"] },
+        { id: 115, en: "Tomato", he: "עגבניה", options: ["מלון", "עגבניה", "תפוח", "בננה"] },
       ]
     },
     {
@@ -44,10 +54,343 @@ const MOCK_DB = {
       title: "נסיעות",
       icon: "✈️",
       color: "bg-blue-500",
-      totalQuestions: 5,
+      totalQuestions: 10,
       words: [
         { id: 11, en: "Hotel", he: "מלון", options: ["בית", "מלון", "מסעדה", "חנות"] },
         { id: 12, en: "Ticket", he: "כרטיס", options: ["דרכון", "מזוודה", "כרטיס", "מפה"] },
+        { id: 116, en: "Train", he: "רכבת", options: ["אוטו", "אוטובוס", "רכבת", "סירה"] },
+        { id: 117, en: "Taxi", he: "מונית", options: ["אופניים", "מונית", "רכבת", "אוטובוס"] },
+        { id: 118, en: "Airport", he: "שדה תעופה", options: ["נמל", "תחנה", "שדה תעופה", "נמל תעופה"] },
+        { id: 119, en: "Passport", he: "דרכון", options: ["תעודה", "דרכון", "כרטיס", "רישיון"] },
+        { id: 120, en: "Luggage", he: "מזוודה", options: ["מזוודה", "תרמיל", "תיק", "שק"] },
+        { id: 121, en: "Station", he: "תחנה", options: ["תחנה", "שדה", "מגרש", "בית"] },
+        { id: 122, en: "Map", he: "מפה", options: ["מפה", "מדריך", "מחשב", "טלפון"] },
+        { id: 123, en: "Ticket office", he: "משרד כרטיסים", options: ["קופה", "משרד", "שירות", "משרד כרטיסים"] },
+      ]
+    }
+    ,
+    {
+      id: 4,
+      title: "צבעים",
+      icon: "🎨",
+      color: "bg-red-400",
+      totalQuestions: 10,
+      words: [
+        { id: 13, en: "Red", he: "אדום", options: ["אדום", "כחול", "ירוק", "צהוב"] },
+        { id: 14, en: "Blue", he: "כחול", options: ["לבן", "כחול", "שחור", "חום"] },
+        { id: 15, en: "Yellow", he: "צהוב", options: ["וורוד", "סגול", "צהוב", "אפור"] },
+        { id: 64, en: "Green", he: "ירוק", options: ["ירוק", "סגול", "כחול", "חום"] },
+        { id: 65, en: "Black", he: "שחור", options: ["לבן", "שחור", "צהוב", "בורח"] },
+        { id: 66, en: "White", he: "לבן", options: ["שחור", "לבן", "ורוד", "אפור"] },
+        { id: 67, en: "Purple", he: "סגול", options: ["סגול", "חום", "ירוק", "שחור"] },
+        { id: 68, en: "Orange", he: "כתום", options: ["כתום", "כחול", "ירוק", "אדום"] },
+        { id: 69, en: "Brown", he: "חום", options: ["סגול", "חום", "כחול", "שחור"] },
+        { id: 70, en: "Pink", he: "ורוד", options: ["ורוד", "צהוב", "שחור", "לבן"] },
+      ]
+    },
+    {
+      id: 5,
+      title: "צורות",
+      icon: "🔺",
+      color: "bg-yellow-400",
+      totalQuestions: 10,
+      words: [
+        { id: 16, en: "Circle", he: "עגול", options: ["מרובע", "משולש", "עגול", "מלבן"] },
+        { id: 17, en: "Square", he: "מרובע", options: ["מרובע", "עגול", "לב", "כוכב"] },
+        { id: 18, en: "Triangle", he: "משולש", options: ["משולש", "אליפסה", "קו", "נקודה"] },
+        { id: 71, en: "Rectangle", he: "מלבן", options: ["מלבן", "עגול", "מרובע", "לב"] },
+        { id: 72, en: "Oval", he: "ביצה/אליפסה", options: ["אליפסה", "משולש", "עגול", "כוכב"] },
+        { id: 73, en: "Star", he: "כוכב", options: ["לב", "כוכב", "עגול", "משולש"] },
+        { id: 74, en: "Heart", he: "לב", options: ["לב", "מגן", "כדור", "משולש"] },
+        { id: 75, en: "Diamond", he: "יהלום", options: ["מרובע", "יהלום", "עגול", "לב"] },
+        { id: 76, en: "Pentagon", he: "מחומש", options: ["משולש", "מחומש", "עגול", "מלבן"] },
+        { id: 77, en: "Hexagon", he: "משושה", options: ["משושה", "עגול", "מרובע", "לב"] },
+      ]
+    },
+    {
+      id: 6,
+      title: "חיות",
+      icon: "🐶",
+      color: "bg-green-400",
+      totalQuestions: 10,
+      words: [
+        { id: 19, en: "Dog", he: "כלב", options: ["כלב", "חתול", "תנין", "סוס"] },
+        { id: 20, en: "Cat", he: "חתול", options: ["פרה", "חתול", "ציפור", "דג"] },
+        { id: 21, en: "Bird", he: "ציפור", options: ["דוב", "אריה", "ציפור", "נחש"] },
+        { id: 78, en: "Fish", he: "דג", options: ["דג", "אריה", "חתול", "סוס"] },
+        { id: 79, en: "Horse", he: "סוס", options: ["סוס", "חתול", "דג", "פרה"] },
+        { id: 80, en: "Cow", he: "פרה", options: ["פרה", "כבש", "סוס", "תנין"] },
+        { id: 81, en: "Sheep", he: "כבש", options: ["כבש", "כלב", "חתול", "דג"] },
+        { id: 82, en: "Rabbit", he: "ארנב", options: ["ארנב", "חמור", "סוס", "עורב"] },
+        { id: 83, en: "Lion", he: "אריה", options: ["אריה", "נחש", "דג", "ציפור"] },
+        { id: 84, en: "Elephant", he: "פיל", options: ["פיל", "עכבר", "סוס", "כלב"] },
+      ]
+    },
+    {
+      id: 7,
+      title: "פירות",
+      icon: "🍎",
+      color: "bg-orange-400",
+      totalQuestions: 10,
+      words: [
+        { id: 22, en: "Apple", he: "תפוח", options: ["אגס", "תפוח", "בננה", "ענב"] },
+        { id: 23, en: "Banana", he: "בננה", options: ["בננה", "תפוח", "תות", "אשכולית"] },
+        { id: 24, en: "Grape", he: "ענב", options: ["מלון", "ענב", "לימון", "דובדבן"] },
+        { id: 85, en: "Orange", he: "תפוז", options: ["מלון", "תפוז", "אגס", "בננה"] },
+        { id: 86, en: "Pear", he: "אגס", options: ["אגס", "תפוח", "אבטיח", "ענב"] },
+        { id: 87, en: "Strawberry", he: "תות", options: ["תות", "מלון", "תפוח", "אפרסק"] },
+        { id: 88, en: "Watermelon", he: "אבטיח", options: ["אבטיח", "לימון", "בננה", "ענב"] },
+        { id: 89, en: "Peach", he: "אפרסק", options: ["אפרסק", "תפוח", "שזיף", "מלון"] },
+        { id: 90, en: "Cherry", he: "דובדבן", options: ["דובדבן", "אגס", "אפרסק", "תות"] },
+        { id: 91, en: "Lemon", he: "לימון", options: ["לימון", "תפוח", "בננה", "ענב"] },
+      ]
+    },
+    {
+      id: 8,
+      title: "גוף",
+      icon: "👶",
+      color: "bg-pink-300",
+      totalQuestions: 10,
+      words: [
+        { id: 25, en: "Hand", he: "יד", options: ["רגל", "יד", "ראש", "אוזן"] },
+        { id: 26, en: "Head", he: "ראש", options: ["בטן", "לחי", "ראש", "שן"] },
+        { id: 27, en: "Eye", he: "עין", options: ["פה", "אף", "עין", "שיער"] },
+        { id: 92, en: "Ear", he: "אוזן", options: ["פה", "אוזן", "עין", "אף"] },
+        { id: 93, en: "Nose", he: "אף", options: ["אף", "שן", "ראש", "יד"] },
+        { id: 94, en: "Mouth", he: "פה", options: ["פה", "אוזן", "עין", "לב"] },
+        { id: 95, en: "Leg", he: "רגל", options: ["יד", "רגל", "ראש", "בטן"] },
+        { id: 96, en: "Finger", he: "אצבע", options: ["אצבע", "אגודל", "ברך", "קרסול"] },
+        { id: 97, en: "Tooth", he: "שן", options: ["שן", "שיער", "אף", "עין"] },
+        { id: 98, en: "Hair", he: "שיער", options: ["שיער", "עור", "רגל", "יד"] },
+      ]
+    },
+    {
+      id: 9,
+      title: "בגדים",
+      icon: "👕",
+      color: "bg-blue-300",
+      totalQuestions: 10,
+      words: [
+        { id: 28, en: "Shirt", he: "חולצה", options: ["מכנסיים", "חולצה", "מעיל", "כובע"] },
+        { id: 29, en: "Pants", he: "מכנסיים", options: ["חצאית", "מכנסיים", "גרביים", "נעליים"] },
+        { id: 30, en: "Hat", he: "כובע", options: ["חגורה", "כובע", "כפפה", "צעיף"] },
+        { id: 99, en: "Socks", he: "גרביים", options: ["כפפה", "גרביים", "כובע", "חולצה"] },
+        { id: 100, en: "Shoes", he: "נעליים", options: ["נעליים", "כפפה", "כובע", "שמלה"] },
+        { id: 101, en: "Coat", he: "מעיל", options: ["חולצה", "מעיל", "מכנסיים", "כובע"] },
+        { id: 102, en: "Dress", he: "שמלה", options: ["ג'ינס", "שמלות", "שטרו", "שמלה"] },
+        { id: 103, en: "Belt", he: "חגורה", options: ["כפפה", "חגורה", "כובע", "נעל"] },
+        { id: 104, en: "Gloves", he: "כפפות", options: ["כפפה", "כפפות", "כובע", "צעיף"] },
+        { id: 105, en: "Scarf", he: "צעיף", options: ["כובע", "צעיף", "חגורה", "חולצה"] },
+      ]
+    },
+    {
+      id: 10,
+      title: "צעצועים",
+      icon: "🧸",
+      color: "bg-purple-300",
+      totalQuestions: 10,
+      words: [
+        { id: 31, en: "Doll", he: "בובה", options: ["כדור", "בובה", "חבל", "משולש"] },
+        { id: 32, en: "Ball", he: "כדור", options: ["כדור", "ספר", "מכונית", "צעצוע"] },
+        { id: 33, en: "Car", he: "מכונית", options: ["סוס", "מכונית", "מטוס", "סירה"] },
+        { id: 124, en: "Puzzle", he: "פאזל", options: ["פאזל", "בובה", "כדור", "חבל"] },
+        { id: 125, en: "Crayons", he: "צבעים", options: ["צבעים", "עפרונות", "דף", "מחברת"] },
+        { id: 126, en: "Blocks", he: "קוביות", options: ["קוביות", "חבל", "בובה", "ספר"] },
+        { id: 127, en: "Kite", he: "עפיפון", options: ["עפיפון", "כדור", "משאית", "בובה"] },
+        { id: 128, en: "Yo-yo", he: "יו-יו", options: ["יו-יו", "כדור", "בובה", "מטוס"] },
+        { id: 129, en: "Train set", he: "רכבת צעצוע", options: ["רכבת צעצוע", "מכונית", "בובה", "כדור"] },
+        { id: 130, en: "Stuffed bear", he: "דובי ממולא", options: ["דובי", "רובוט", "בובה", "כדור"] },
+      ]
+    },
+    {
+      id: 11,
+      title: "מזג אוויר",
+      icon: "☀️",
+      color: "bg-yellow-300",
+      totalQuestions: 10,
+      words: [
+        { id: 34, en: "Sun", he: "שמש", options: ["ירח", "שמש", "גשם", "שלג"] },
+        { id: 35, en: "Rain", he: "גשם", options: ["רוח", "גשם", "ברק", "ענן"] },
+        { id: 36, en: "Snow", he: "שלג", options: ["שלג", "שמש", "גשם", "ערפל"] },
+        { id: 131, en: "Cloud", he: "ענן", options: ["שמש", "ענן", "גשם", "שלג"] },
+        { id: 132, en: "Wind", he: "רוח", options: ["שמש", "גשם", "רוח", "שלג"] },
+        { id: 133, en: "Storm", he: "סערה", options: ["סערה", "ערפל", "גשם", "שמש"] },
+        { id: 134, en: "Fog", he: "ערפל", options: ["ערפל", "שמש", "גשם", "רוח"] },
+        { id: 135, en: "Thunder", he: "רעם", options: ["ברד", "רעם", "ענן", "שמש"] },
+        { id: 136, en: "Hail", he: "ברד", options: ["גשם", "ברד", "שלג", "ערפל"] },
+        { id: 137, en: "Temperature", he: "טמפרטורה", options: ["מהירות", "גובה", "טמפרטורה", "זמן"] },
+      ]
+    },
+    {
+      id: 12,
+      title: "תחבורה",
+      icon: "🚗",
+      color: "bg-indigo-300",
+      totalQuestions: 10,
+      words: [
+        { id: 37, en: "Car", he: "מכונית", options: ["אופניים", "מכונית", "אוטובוס", "סירה"] },
+        { id: 38, en: "Bus", he: "אוטובוס", options: ["אוטו", "אופנוע", "אוטובוס", "מטוס"] },
+        { id: 39, en: "Bike", he: "אופניים", options: ["רכבת", "סירה", "אופניים", "מכונית"] },
+        { id: 138, en: "Train", he: "רכבת", options: ["רכבת", "מכונית", "אוטו", "אוטובוס"] },
+        { id: 139, en: "Tram", he: "חשמלית", options: ["חשמלית", "אוטובוס", "מכונית", "אופניים"] },
+        { id: 140, en: "Ship", he: "אוניה", options: ["אוניה", "סירה", "מטוס", "רכבת"] },
+        { id: 141, en: "Plane", he: "מטוס", options: ["מטוס", "אוטובוס", "מכונית", "סירה"] },
+        { id: 142, en: "Subway", he: "רכבת תחתית", options: ["אוטובוס", "מכונית", "רכבת תחתית", "אופניים"] },
+        { id: 143, en: "Scooter", he: "קורקינט", options: ["קורקינט", "אופניים", "מכונית", "אוטובוס"] },
+        { id: 144, en: "Truck", he: "משאית", options: ["משאית", "מכונית", "אוטובוס", "רכבת"] },
+      ]
+    },
+    {
+      id: 13,
+      title: "רגשות",
+      icon: "😊",
+      color: "bg-pink-200",
+      totalQuestions: 10,
+      words: [
+        { id: 40, en: "Happy", he: "שמח", options: ["עצוב", "כועס", "שמח", "מפוחד"] },
+        { id: 41, en: "Sad", he: "עצוב", options: ["שמח", "עצוב", "רגוע", "נחמד"] },
+        { id: 42, en: "Angry", he: "כועס", options: ["שקט", "כועס", "שמחה", "פוחד"] },
+        { id: 145, en: "Calm", he: "רגוע", options: ["לחוץ", "רגוע", "שמחה", "כועס"] },
+        { id: 146, en: "Surprised", he: "מופתע", options: ["משועמם", "מרוצה", "מופתע", "עצוב"] },
+        { id: 147, en: "Bored", he: "משועמם", options: ["משועמם", "מרוצה", "שמח", "כועס"] },
+        { id: 148, en: "Proud", he: "גאה", options: ["מביך", "גאה", "עצוב", "לחוץ"] },
+        { id: 149, en: "Tired", he: "עייף", options: ["מרוצה", "עייף", "נרגש", "כועס"] },
+        { id: 150, en: "Nervous", he: "לחוץ", options: ["רגוע", "לחוץ", "שמח", "עצוב"] },
+        { id: 151, en: "Excited", he: "נרגש", options: ["משועמם", "נרגש", "עצוב", "עצבני"] },
+      ]
+    },
+    {
+      id: 14,
+      title: "ימים",
+      icon: "📅",
+      color: "bg-green-200",
+      totalQuestions: 10,
+      words: [
+        { id: 43, en: "Monday", he: "יום שני", options: ["יום ראשון", "יום שני", "יום שלישי", "שבת"] },
+        { id: 44, en: "Friday", he: "יום שישי", options: ["יום חמישי", "יום שישי", "יום שבת", "יום ראשון"] },
+        { id: 45, en: "Sunday", he: "יום ראשון", options: ["שבת", "שני", "יום ראשון", "חמישי"] },
+        { id: 152, en: "Thursday", he: "יום חמישי", options: ["יום חמישי", "יום שישי", "יום שבת", "יום ראשון"] },
+        { id: 153, en: "Tuesday", he: "יום שלישי", options: ["יום שני", "יום שלישי", "יום רביעי", "שבת"] },
+        { id: 154, en: "Wednesday", he: "יום רביעי", options: ["יום חמישי", "יום רביעי", "יום שני", "יום ראשון"] },
+        { id: 155, en: "Saturday", he: "שבת", options: ["שבת", "יום ראשון", "שי", "שני"] },
+        { id: 156, en: "Today", he: "היום", options: ["אתמול", "היום", "מחר", "לפני"] },
+        { id: 157, en: "Tomorrow", he: "מחר", options: ["אתמול", "היום", "מחר", "עכשיו"] },
+        { id: 158, en: "Yesterday", he: "אתמול", options: ["מחר", "אתמול", "היום", "לפני"] },
+      ]
+    },
+    {
+      id: 15,
+      title: "חודשים לועזיים",
+      icon: "📆",
+      color: "bg-blue-200",
+      totalQuestions: 10,
+      words: [
+        { id: 46, en: "January", he: "ינואר", options: ["אוקטובר", "ינואר", "אפריל", "יולי"] },
+        { id: 47, en: "May", he: "מאי", options: ["מאי", "פברואר", "נובמבר", "מרץ"] },
+        { id: 48, en: "August", he: "אוגוסט", options: ["אוגוסט", "יוני", "ספטמבר", "דצמבר"] },
+        { id: 159, en: "February", he: "פברואר", options: ["מרץ", "פברואר", "ינואר", "אפריל"] },
+        { id: 160, en: "March", he: "מרץ", options: ["מרץ", "אפריל", "מאי", "יוני"] },
+        { id: 161, en: "April", he: "אפריל", options: ["אפריל", "מרץ", "יוני", "יולי"] },
+        { id: 162, en: "June", he: "יוני", options: ["יוני", "יולי", "אוגוסט", "ספטמבר"] },
+        { id: 163, en: "September", he: "ספטמבר", options: ["אוגוסט", "ספטמבר", "אוקטובר", "נובמבר"] },
+        { id: 164, en: "November", he: "נובמבר", options: ["אוקטובר", "נובמבר", "דצמבר", "ספטמבר"] },
+        { id: 165, en: "December", he: "דצמבר", options: ["נובמבר", "דצמבר", "ינואר", "אוקטובר"] },
+      ]
+    },
+    {
+      id: 16,
+      title: "בית ספר",
+      icon: "🏫",
+      color: "bg-indigo-200",
+      totalQuestions: 10,
+      words: [
+        { id: 49, en: "Teacher", he: "מורה", options: ["תלמיד", "מורה", "ספר", "לוח"] },
+        { id: 50, en: "Book", he: "ספר", options: ["כיסא", "שולחן", "ספר", "עט"] },
+        { id: 51, en: "Desk", he: "שולחן", options: ["שולחן", "מחק", "מחשב", "חלון"] },
+        { id: 166, en: "Student", he: "תלמיד", options: ["מורה", "תלמיד", "חבר", "אח"] },
+        { id: 167, en: "Classroom", he: "כיתה", options: ["כיתה", "חצר", "ספריה", "חדר"] },
+        { id: 168, en: "Homework", he: "שיעורי בית", options: ["מבחן", "שיעורי בית", "פרויקט", "חופשה"] },
+        { id: 169, en: "Lesson", he: "שיעור", options: ["שיעור", "מבחן", "אימון", "שעת"] },
+        { id: 170, en: "Library", he: "ספריה", options: ["ספריה", "כיתה", "מחשב", "חצר"] },
+        { id: 171, en: "Exam", he: "מבחן", options: ["מבחן", "מזגן", "שיר", "חופשה"] },
+        { id: 172, en: "Notebook", he: "מחברת", options: ["מחברת", "עפרון", "עט", "ספר"] },
+      ]
+    },
+    {
+      id: 17,
+      title: "בית",
+      icon: "🏠",
+      color: "bg-yellow-200",
+      totalQuestions: 11,
+      words: [
+        { id: 52, en: "Door", he: "דלת", options: ["חלון", "גג", "דלת", "מרפסת"] },
+        { id: 53, en: "Window", he: "חלון", options: ["מיטה", "דלת", "חלון", "ספה"] },
+        { id: 54, en: "Bed", he: "מיטה", options: ["שולחן", "מיטה", "דלת", "סיר"] },
+        { id: 173, en: "Roof", he: "גג", options: ["ריצפה", "גג", "דלת", "חלון"] },
+        { id: 174, en: "Kitchen", he: "מטבח", options: ["מטבח", "חדר", "חצר", "מרפסת"] },
+        { id: 175, en: "Sofa", he: "ספה", options: ["מיטה", "ספה", "שולחן", "כיסא"] },
+        { id: 176, en: "Bathroom", he: "חדר אמבטיה", options: ["חדר שינה", "חדר אמבטיה", "מטבח", "משרד"] },
+        { id: 177, en: "Garden", he: "גינה", options: ["גינה", "חצר", "מרפסת", "חדר"] },
+        { id: 178, en: "Balcony", he: "מרפסת", options: ["מרפסת", "גג", "חדר", "מרתף"] },
+        { id: 179, en: "Stairs", he: "מדרגות", options: ["דלת", "מדרגות", "חלון", "גג"] },
+        { id: 201, en: "Toilet", he: "שירותים", options: ["מקלחת", "מטבח", "חדר שינה", "שירותים"] },
+      ]
+    },
+    {
+      id: 18,
+      title: "טבע",
+      icon: "🌳",
+      color: "bg-green-300",
+      totalQuestions: 10,
+      words: [
+        { id: 55, en: "Tree", he: "עץ", options: ["פרח", "עץ", "אבן", "מים"] },
+        { id: 56, en: "Flower", he: "פרח", options: ["אדמה", "פרח", "עשב", "סלע"] },
+        { id: 57, en: "River", he: "נהר", options: ["אגם", "נהר", "ים", "שדה"] },
+        { id: 180, en: "Mountain", he: "הר", options: ["הרים", "גבעה", "הר", "עמק"] },
+        { id: 181, en: "Ocean", he: "אוקיינוס", options: ["נהר", "אוקיינוס", "אגם", "ים"] },
+        { id: 182, en: "Beach", he: "חוף", options: ["חוף", "ים", "יער", "מדבר"] },
+        { id: 183, en: "Forest", he: "יער", options: ["יער", "פארק", "חוף", "מדבר"] },
+        { id: 184, en: "Field", he: "שדה", options: ["שדה", "יער", "גן", "חצר"] },
+        { id: 185, en: "Grass", he: "דשא", options: ["עץ", "פרח", "דשא", "סלע"] },
+        { id: 186, en: "Rock", he: "סלע", options: ["סלע", "עפר", "דשא", "עץ"] },
+      ]
+    },
+    {
+      id: 19,
+      title: "פעולות",
+      icon: "🏃",
+      color: "bg-red-200",
+      totalQuestions: 10,
+      words: [
+        { id: 58, en: "Run", he: "לרוץ", options: ["לשחק", "לשיר", "לרוץ", "לרקוד"] },
+        { id: 59, en: "Eat", he: "לאכול", options: ["לשתות", "לאכול", "לישון", "ללמוד"] },
+        { id: 60, en: "Sleep", he: "לישון", options: ["לרקוד", "לשיר", "לישון", "לרוץ"] },
+        { id: 187, en: "Sing", he: "לשיר", options: ["לרקוד", "לשיר", "לרוץ", "לשחק"] },
+        { id: 188, en: "Dance", he: "לרקוד", options: ["לשיר", "לרקוד", "לקרוא", "לכתוב"] },
+        { id: 189, en: "Read", he: "לקרוא", options: ["לכתוב", "לקרוא", "ללמוד", "לשחק"] },
+        { id: 190, en: "Write", he: "לכתוב", options: ["לרוץ", "לכתוב", "לשיר", "לרקוד"] },
+        { id: 191, en: "Swim", he: "לשחות", options: ["לשחות", "לרוץ", "לשיר", "לצחוק"] },
+        { id: 192, en: "Work", he: "לעבוד", options: ["לשחק", "לעבוד", "לישון", "לקרוא"] },
+        { id: 193, en: "Play", he: "לשחק", options: ["לשחק", "לקרוא", "ללמוד", "לעבוד"] },
+      ]
+    },
+    {
+      id: 20,
+      title: "ניגודים",
+      icon: "⚖️",
+      color: "bg-gray-200",
+      totalQuestions: 10,
+      words: [
+        { id: 61, en: "Big", he: "גדול", options: ["קטן", "גדול", "מהיר", "איטי"] },
+        { id: 62, en: "Small", he: "קטן", options: ["חזק", "קטן", "גבוה", "נמוך"] },
+        { id: 63, en: "Fast", he: "מהיר", options: ["איטי", "חזק", "מהיר", "כבד"] },
+        { id: 194, en: "High", he: "גבוה", options: ["נמוך", "גבוה", "מהיר", "כבד"] },
+        { id: 195, en: "Low", he: "נמוך", options: ["גבוה", "נמוך", "חזק", "חלש"] },
+        { id: 196, en: "Strong", he: "חזק", options: ["חלש", "חזק", "מהיר", "איטי"] },
+        { id: 197, en: "Weak", he: "חלש", options: ["חזק", "חלש", "גבוה", "נמוך"] },
+        { id: 198, en: "Hot", he: "חם", options: ["קר", "חם", "לח", "יבש"] },
+        { id: 199, en: "Cold", he: "קר", options: ["חם", "קר", "נעים", "לח"] },
+        { id: 200, en: "Light", he: "קל", options: ["כבד", "קל", "מהיר", "איטי"] },
       ]
     }
   ],
@@ -1105,26 +1448,30 @@ const LearnView = ({ data, startLesson, setActiveTab, setShowWritingModal, handl
       <h1 className="text-2xl font-bold text-gray-800 mb-6">מסלול הלימוד</h1>
 
       <div className="grid grid-cols-2 gap-4 mb-6">
-        <div onClick={() => setActiveTab('abc')} className="bg-gradient-to-br from-purple-500 to-indigo-600 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-32">
-          <div className="text-4xl mb-2">🔤</div>
-          <span className="font-bold text-sm">לוח אותיות</span>
+        <div onClick={() => setActiveTab('abc')} className="bg-gradient-to-br from-purple-500 to-indigo-600 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-20">
+          <div className="text-4xl mb-1">🔤</div>
+          <span className="font-bold text-sm">אותיות</span>
         </div>
-        <div onClick={() => setShowWritingModal(true)} className="bg-gradient-to-br from-blue-500 to-cyan-600 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-32">
-          <div className="text-4xl mb-2">✍️</div>
+        <div onClick={() => setActiveTab('numbers')} className="bg-gradient-to-br from-yellow-400 to-amber-500 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-20">
+          <div className="text-4xl mb-1">🔢</div>
+          <span className="font-bold text-sm">מספרים</span>
+        </div>
+        {/* <div onClick={() => setShowWritingModal(true)} className="bg-gradient-to-br from-blue-500 to-cyan-600 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-20">
+          <div className="text-4xl mb-1">✍️</div>
           <span className="font-bold text-sm">מאמן כתיבה (AI)</span>
         </div>
-        <div onClick={() => setShowGrammarModal(true)} className="bg-gradient-to-br from-teal-400 to-emerald-600 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-32">
-          <div className="text-4xl mb-2">🔬</div>
+        <div onClick={() => setShowGrammarModal(true)} className="bg-gradient-to-br from-teal-400 to-emerald-600 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-20">
+          <div className="text-4xl mb-1">🔬</div>
           <span className="font-bold text-sm">מעבדת דקדוק (AI)</span>
         </div>
-        <div onClick={handleGenerateIdiom} className="bg-gradient-to-br from-pink-500 to-rose-600 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-32">
-          <div className="text-4xl mb-2">🎨</div>
+        <div onClick={handleGenerateIdiom} className="bg-gradient-to-br from-pink-500 to-rose-600 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-20">
+          <div className="text-4xl mb-1">🎨</div>
           <span className="font-bold text-sm">ניב בהפתעה (AI)</span>
-        </div>
+        </div> */}
       </div>
 
       {/* AI Quiz Generator */}
-      <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 mb-8">
+      {/* <div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 mb-8">
         <h3 className="font-bold text-gray-800 mb-3 flex items-center">
           <Sparkles className="text-yellow-500 ml-2" size={18} />
           חידון AI מהיר
@@ -1145,13 +1492,13 @@ const LearnView = ({ data, startLesson, setActiveTab, setShowWritingModal, handl
             {isGeneratingQuiz ? <Loader2 className="animate-spin" size={18} /> : 'צור'}
           </button>
         </div>
-      </div>
+      </div> */}
 
       <div className="space-y-6 relative">
         <div className="absolute top-4 bottom-4 right-[2.2rem] w-1 bg-gray-100 -z-10 rounded-full"></div>
         {data.lessons.map((lesson) => (
           <div key={lesson.id} className="flex items-center group">
-            <div onClick={() => startLesson(lesson)} className={`w-20 h-20 rounded-full border-b-4 flex items-center justify-center text-3xl cursor-pointer transition-transform active:translate-y-1 active:border-b-0 shadow-sm z-10 ${lesson.id === 1 ? 'bg-green-500 border-green-700 text-white' : lesson.id === 2 ? 'bg-orange-500 border-orange-700 text-white' : 'bg-gray-200 border-gray-300 grayscale opacity-80'}`}>
+            <div onClick={() => startLesson(lesson)} className={`w-20 h-20 rounded-full flex items-center justify-center text-3xl cursor-pointer transition-transform active:translate-y-1 active:border-b-0 shadow-sm z-10 ${lesson.color || 'bg-gray-200'} text-white border-b-4 border-black/10`}>
               {lesson.icon}
             </div>
             <div className="mr-6 bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex-1 relative">
@@ -1173,10 +1520,9 @@ const AbcView = ({ setActiveTab }) => {
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
   const [viewMode, setViewMode] = useState('both');
 
-  const playSound = (letter) => {
+  const playSound = (letter: string) => {
     window.speechSynthesis.cancel();
-    const textToSpeak = letter === 'Z' ? 'Zed' : letter;
-    const utterance = new SpeechSynthesisUtterance(textToSpeak);
+    const utterance = new SpeechSynthesisUtterance(letter === 'Z' ? 'Zed' : letter.toLowerCase());
     utterance.lang = 'en-US';
     utterance.rate = 0.8;
     window.speechSynthesis.speak(utterance);
@@ -1202,12 +1548,68 @@ const AbcView = ({ setActiveTab }) => {
           <button onClick={() => setViewMode('both')} className={`px-4 py-1.5 text-sm rounded-lg transition-all ${viewMode === 'both' ? 'bg-white text-blue-600 shadow-sm font-bold' : 'text-gray-500 hover:text-gray-700'}`}>שניהם</button>
           <button onClick={() => setViewMode('lower')} className={`px-4 py-1.5 text-sm rounded-lg transition-all ${viewMode === 'lower' ? 'bg-white text-blue-600 shadow-sm font-bold' : 'text-gray-500 hover:text-gray-700'}`}>קטנות</button>
         </div>
+        <p className="text-sm text-gray-500 text-center">לחצו על אות כדי לשמוע</p>
       </div>
       <div className="grid grid-cols-5 gap-3 overflow-y-auto pb-20 px-1" dir="ltr">
         {letters.map((letter) => (
           <button key={letter} onClick={() => playSound(letter)} className="bg-white aspect-square rounded-xl shadow-sm border border-gray-200 flex flex-col items-center justify-center active:scale-90 transition-all hover:border-blue-400 hover:shadow-md group">
             <span className="text-2xl font-bold text-gray-700 group-hover:text-blue-600">{getLetterText(letter)}</span>
-            <Volume2 size={12} className="text-gray-300 mt-1 opacity-0 group-hover:opacity-100 transition-opacity text-blue-400" />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const NumberView = ({ setActiveTab }) => {
+  const ranges = [
+    { label: '1-20', start: 1, end: 20 },
+    { label: '21-60', start: 21, end: 60 },
+    { label: '61-100', start: 61, end: 100 },
+    { label: '101-140', start: 101, end: 140 },
+    { label: '141-1000', start: 141, end: 1000 },
+  ];
+
+  const [rangeIndex, setRangeIndex] = useState(0);
+  const range = ranges[rangeIndex];
+  const numbers = Array.from({ length: range.end - range.start + 1 }, (_, i) => range.start + i);
+
+  const playNumber = (n) => {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(n.toString());
+    utterance.lang = 'en-US';
+    utterance.rate = 0.9;
+    window.speechSynthesis.speak(utterance);
+  };
+
+  return (
+    <div className="p-6 pb-24 h-full bg-gray-50 flex flex-col">
+      <div className="flex flex-col space-y-4 mb-6 sticky top-0 bg-gray-50 z-10 py-2">
+        <div className="flex items-center space-x-4 space-x-reverse">
+          <button onClick={() => setActiveTab('learn')} className="p-2 hover:bg-gray-200 rounded-full transition-colors">
+            <ChevronLeft size={24} className="text-gray-600 rotate-180" />
+          </button>
+          <h1 className="text-2xl font-bold text-gray-800">מספרים</h1>
+        </div>
+
+        <div className="bg-gray-200 p-1 rounded-xl flex self-center shadow-inner">
+          {ranges.map((r, idx) => (
+            <button
+              key={r.label}
+              onClick={() => setRangeIndex(idx)}
+              className={`px-3 py-1.5 text-sm rounded-lg transition-all ${idx === rangeIndex ? 'bg-white text-blue-600 shadow-sm font-bold' : 'text-gray-500 hover:text-gray-700'}`}
+            >
+              {r.label}
+            </button>
+          ))}
+        </div>
+        <p className="text-sm text-gray-500 text-center">לחצו על מספר כדי לשמוע</p>
+      </div>
+
+      <div className="grid grid-cols-5 gap-3 overflow-y-auto pb-20 px-1" dir="ltr">
+        {numbers.map((n) => (
+          <button key={n} onClick={() => playNumber(n)} className="bg-white aspect-square rounded-xl shadow-sm border border-gray-200 flex flex-col items-center justify-center active:scale-90 transition-all hover:border-blue-400 hover:shadow-md group">
+            <span className="text-2xl font-bold text-gray-700 group-hover:text-blue-600">{n}</span>
           </button>
         ))}
       </div>
@@ -1486,6 +1888,7 @@ const ReadingView = ({
               <span>•</span>
               <span>{currentStory.category}</span>
             </div>
+            <p className="text-xs text-gray-400 mt-1">לחצו על מילה כדי לראות תרגום</p>
           </div>
           <button onClick={handleExplainStory} disabled={isExplaining} className="flex items-center space-x-1 space-x-reverse bg-purple-100 text-purple-700 px-3 py-1.5 rounded-full text-xs font-bold hover:bg-purple-200 transition-colors">
             {isExplaining ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
@@ -2421,6 +2824,7 @@ const App = () => {
           isGeneratingQuiz={isGeneratingQuiz}
         />}
       {activeTab === 'abc' && <AbcView setActiveTab={setActiveTab} />}
+      {activeTab === 'numbers' && <NumberView setActiveTab={setActiveTab} />}
       {activeTab === 'quiz' && <QuizView quizState={quizState} currentLesson={currentLesson} handleAnswer={handleAnswer} nextQuestion={nextQuestion} closeQuiz={closeQuiz} />}
       {activeTab === 'reading' && (
         <ReadingView

@@ -66,6 +66,21 @@ button {
 button:hover {
   border-color: #646cff;
 }
+
+/* Ensure form controls use readable text color on light backgrounds */
+input,
+textarea,
+select {
+  color: #111827;
+  /* Tailwind gray-900 / readable on white */
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #9CA3AF;
+  /* Tailwind gray-400 */
+}
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -76,10 +91,57 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }
-} */
+}
+
+*/
+
+/* Overlay scrollbar utility
+   Usage: add the class `overlay-scrollbar` to any scrollable container to get
+   a thin, translucent scrollbar that visually overlays the content on modern browsers.
+   Note: exact overlay behavior depends on the browser (Chrome/Edge/Safari/Blink support
+   WebKit scrollbar styling; Firefox uses `scrollbar-width`/`scrollbar-color`). */
+.overlay-scrollbar {
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.35) transparent;
+  /* ensure scrollbars don't show default square corner */
+  -ms-overflow-style: auto;
+}
+
+.overlay-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.overlay-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.overlay-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.35);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  /* adds spacing so thumb doesn't overlap content visually */
+  background-clip: padding-box;
+}
+
+.overlay-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.55);
+}
+
+.overlay-scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Optional: make the scrollbar even less intrusive on light backgrounds */
+.overlay-scrollbar.light::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.45);
+}

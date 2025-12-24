@@ -1,14 +1,18 @@
 // @ts-nocheck
 import React, { useState, useEffect, useRef } from 'react';
-import { Book, Trophy, Home, User, Star, ChevronLeft, Check, X, Volume2, Award, Zap, BookOpen, Glasses, Filter, Library, FileText, Briefcase, Coffee, Globe, Cpu, HeartPulse, MessageCircle, Send, Sparkles, Loader2, Plus, RefreshCw, Settings, LogOut, Bell, Edit3, Medal, PenTool, Lightbulb, GraduationCap, Plane, Stethoscope, Microscope, Palette } from 'lucide-react';
+import { Book, LogIn, Trophy, Home, User, Star, ChevronLeft, Check, X, Volume2, Award, Zap, BookOpen, Glasses, Filter, Library, FileText, Briefcase, Coffee, Globe, Cpu, HeartPulse, MessageCircle, Send, Sparkles, Loader2, Plus, RefreshCw, Settings, LogOut, Bell, Edit3, Medal, PenTool, Lightbulb, GraduationCap, Plane, Stethoscope, Microscope, Palette } from 'lucide-react';
+import { /* initializeApp removed - use shared instance */ } from 'firebase/app';
+import { signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, signInWithRedirect, setPersistence, browserLocalPersistence } from 'firebase/auth';
+import { getFirestore, doc, setDoc, onSnapshot, collection } from 'firebase/firestore';
+import firebaseApp, { auth as firebaseAuth } from './firebase';
 
 // --- Data (Full Database Restored) ---
 const MOCK_DB = {
   user: {
-    name: "משתמש",
-    xp: 1250,
-    streak: 5,
-    level: 3
+    name: "אורח",
+    xp: 0,
+    streak: 1,
+    level: 1
   },
   lessons: [
     {
@@ -346,7 +350,7 @@ const MOCK_DB = {
         { id: 55, en: "Tree", he: "עץ", options: ["פרח", "עץ", "אבן", "מים"] },
         { id: 56, en: "Flower", he: "פרח", options: ["אדמה", "פרח", "עשב", "סלע"] },
         { id: 57, en: "River", he: "נהר", options: ["אגם", "נהר", "ים", "שדה"] },
-        { id: 180, en: "Mountain", he: "הר", options: ["הרים", "גבעה", "הר", "עמק"] },
+        { id: 180, en: "Mountain", he: "הר", options: ["צוק", "גבעה", "הר", "עמק"] },
         { id: 181, en: "Ocean", he: "אוקיינוס", options: ["נהר", "אוקיינוס", "אגם", "ים"] },
         { id: 182, en: "Beach", he: "חוף", options: ["חוף", "ים", "יער", "מדבר"] },
         { id: 183, en: "Forest", he: "יער", options: ["יער", "פארק", "חוף", "מדבר"] },
@@ -394,6 +398,7 @@ const MOCK_DB = {
       ]
     }
   ],
+
   readingMaterials: [
     // --- Work Category ---
     {
@@ -1332,15 +1337,7 @@ const CHAT_SCENARIOS = [
 
 // --- Helper Components ---
 
-const TargetIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white">
-    <circle cx="12" cy="12" r="10"></circle>
-    <circle cx="12" cy="12" r="6"></circle>
-    <circle cx="12" cy="12" r="2"></circle>
-  </svg>
-);
-
-const ClickableWord = ({ word, translation, isActive, isHighlighted, onClick, onMouseEnter, onMouseLeave }: { word: string; translation: string; isActive: boolean; isHighlighted: boolean; onClick: () => void; onMouseEnter: () => void; onMouseLeave: () => void }) => {
+const ClickableWord = ({ word, translation, isActive, isHighlighted, onClick, onMouseEnter, onMouseLeave }) => {
   return (
     <span className="relative inline-block mx-1 my-1">
       {isActive && (
@@ -1383,7 +1380,7 @@ const HomeView = ({ data, startLesson, dailyTip, isTipLoading, fetchDailyTip }) 
   <div className="p-6 space-y-6 pb-24 animate-fade-in">
     <header className="flex justify-between items-center">
       <div>
-        <h1 className="text-2xl font-bold text-gray-800">היי, {data.user.name} 👋</h1>
+        <h1 className="text-2xl font-bold text-gray-800">היי, {(data.user.name || '').split(/\s+/)[0]} 👋</h1>
         <p className="text-gray-500">בוא נמשיך ללמוד!</p>
       </div>
       <div className="flex items-center space-x-2 space-x-reverse bg-orange-100 px-3 py-1 rounded-full border border-orange-200">
@@ -1456,16 +1453,16 @@ const LearnView = ({ data, startLesson, setActiveTab, setShowWritingModal, handl
           <div className="text-4xl mb-1">🔢</div>
           <span className="font-bold text-sm">מספרים</span>
         </div>
-        {/* <div onClick={() => setShowWritingModal(true)} className="bg-gradient-to-br from-blue-500 to-cyan-600 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-20">
-          <div className="text-4xl mb-1">✍️</div>
+        {/* <div onClick={() => setShowWritingModal(true)} className="bg-gradient-to-br from-blue-500 to-cyan-600 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-32">
+          <div className="text-4xl mb-2">✍️</div>
           <span className="font-bold text-sm">מאמן כתיבה (AI)</span>
         </div>
-        <div onClick={() => setShowGrammarModal(true)} className="bg-gradient-to-br from-teal-400 to-emerald-600 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-20">
-          <div className="text-4xl mb-1">🔬</div>
+        <div onClick={() => setShowGrammarModal(true)} className="bg-gradient-to-br from-teal-400 to-emerald-600 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-32">
+          <div className="text-4xl mb-2">🔬</div>
           <span className="font-bold text-sm">מעבדת דקדוק (AI)</span>
         </div>
-        <div onClick={handleGenerateIdiom} className="bg-gradient-to-br from-pink-500 to-rose-600 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-20">
-          <div className="text-4xl mb-1">🎨</div>
+        <div onClick={handleGenerateIdiom} className="bg-gradient-to-br from-pink-500 to-rose-600 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-32">
+          <div className="text-4xl mb-2">🎨</div>
           <span className="font-bold text-sm">ניב בהפתעה (AI)</span>
         </div> */}
       </div>
@@ -1496,21 +1493,25 @@ const LearnView = ({ data, startLesson, setActiveTab, setShowWritingModal, handl
 
       <div className="space-y-6 relative">
         <div className="absolute top-4 bottom-4 right-[2.2rem] w-1 bg-gray-100 -z-10 rounded-full"></div>
-        {data.lessons.map((lesson) => (
-          <div key={lesson.id} className="flex items-center group">
-            <div onClick={() => startLesson(lesson)} className={`w-20 h-20 rounded-full flex items-center justify-center text-3xl cursor-pointer transition-transform active:translate-y-1 active:border-b-0 shadow-sm z-10 ${lesson.color || 'bg-gray-200'} text-white border-b-4 border-black/10`}>
-              {lesson.icon}
-            </div>
-            <div className="mr-6 bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex-1 relative">
-              <div className="absolute top-1/2 -right-2 w-4 h-4 bg-white border-t border-l border-gray-100 transform rotate-45 -translate-y-1/2"></div>
-              <h3 className="font-bold text-gray-800">{lesson.title}</h3>
-              <div className="flex items-center text-sm text-gray-500 mt-1">
-                <Star size={14} className="ml-1 text-yellow-400 fill-current" />
-                {lesson.id <= 2 ? 'פתוח ללמידה' : 'נעול'}
+        {data.lessons && data.lessons.length > 0 ? (
+          data.lessons.map((lesson) => (
+            <div onClick={() => startLesson(lesson)} key={lesson.id} className="flex items-center group">
+              <div className={`w-20 h-20 rounded-full flex items-center justify-center text-3xl cursor-pointer transition-transform active:translate-y-1 active:border-b-0 shadow-sm z-10 ${lesson.color || 'bg-gray-200'} text-white border-b-4 border-black/10`}>
+                {lesson.icon}
+              </div>
+              <div className="mr-6 bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex-1 relative">
+                <div className="absolute top-1/2 -right-2 w-4 h-4 bg-white border-t border-l border-gray-100 transform rotate-45 -translate-y-1/2"></div>
+                <h3 className="font-bold text-gray-800">{lesson.title}</h3>
+                <div className="flex items-center text-sm text-gray-500 mt-1">
+                  <Star size={14} className="ml-1 text-yellow-400 fill-current" />
+                  {lesson.id <= 2 ? 'פתוח ללמידה' : 'נעול'}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <div className="text-center p-4 text-gray-500">טוען שיעורים...</div>
+        )}
       </div>
     </div>
   );
@@ -1520,9 +1521,11 @@ const AbcView = ({ setActiveTab }) => {
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
   const [viewMode, setViewMode] = useState('both');
 
-  const playSound = (letter: string) => {
+  const playSound = (letter) => {
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(letter === 'Z' ? 'Zed' : letter.toLowerCase());
+    // Using lowercase forces the TTS to say the letter sound/name without "Capital"
+    const textToSpeak = letter === 'Z' ? 'Zed' : letter.toLowerCase();
+    const utterance = new SpeechSynthesisUtterance(textToSpeak);
     utterance.lang = 'en-US';
     utterance.rate = 0.8;
     window.speechSynthesis.speak(utterance);
@@ -1550,10 +1553,10 @@ const AbcView = ({ setActiveTab }) => {
         </div>
         <p className="text-sm text-gray-500 text-center">לחצו על אות כדי לשמוע</p>
       </div>
-      <div className="grid grid-cols-5 gap-3 overflow-y-auto pb-20 px-1" dir="ltr">
+      <div className="grid grid-cols-5 gap-3 overflow-y-auto pb-20 px-1 overlay-scrollbar" dir="ltr">
         {letters.map((letter) => (
           <button key={letter} onClick={() => playSound(letter)} className="bg-white aspect-square rounded-xl shadow-sm border border-gray-200 flex flex-col items-center justify-center active:scale-90 transition-all hover:border-blue-400 hover:shadow-md group">
-            <span className="text-2xl font-bold text-gray-700 group-hover:text-blue-600">{getLetterText(letter)}</span>
+            <span className={`${viewMode === 'lower' ? 'text-3xl transform -translate-y-1' : 'text-2xl'} font-bold text-gray-700 group-hover:text-blue-600`}>{getLetterText(letter)}</span>
           </button>
         ))}
       </div>
@@ -1606,7 +1609,7 @@ const NumberView = ({ setActiveTab }) => {
         <p className="text-sm text-gray-500 text-center">לחצו על מספר כדי לשמוע</p>
       </div>
 
-      <div className="grid grid-cols-5 gap-3 overflow-y-auto pb-20 px-1" dir="ltr">
+      <div className="grid grid-cols-5 gap-3 overflow-y-auto pb-20 px-1 overlay-scrollbar" dir="ltr">
         {numbers.map((n) => (
           <button key={n} onClick={() => playNumber(n)} className="bg-white aspect-square rounded-xl shadow-sm border border-gray-200 flex flex-col items-center justify-center active:scale-90 transition-all hover:border-blue-400 hover:shadow-md group">
             <span className="text-2xl font-bold text-gray-700 group-hover:text-blue-600">{n}</span>
@@ -1617,7 +1620,7 @@ const NumberView = ({ setActiveTab }) => {
   );
 };
 
-const QuizView = ({ quizState, currentLesson, handleAnswer, nextQuestion, closeQuiz }) => {
+const QuizView = ({ quizState, currentLesson, handleAnswer, nextQuestion, closeQuiz, finishQuiz }) => {
   const speakWord = (text) => {
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
@@ -1640,12 +1643,12 @@ const QuizView = ({ quizState, currentLesson, handleAnswer, nextQuestion, closeQ
             <span className="text-sm text-green-800">תשובות נכונות</span>
           </div>
           <div className="bg-orange-50 p-4 rounded-xl text-center">
-            <span className="block text-2xl font-bold text-orange-600">+50</span>
+            <span className="block text-2xl font-bold text-orange-600">+{quizState.score * 10}</span>
             <span className="text-sm text-orange-800">XP</span>
           </div>
         </div>
-        <button onClick={closeQuiz} className="w-full py-4 bg-blue-500 text-white rounded-xl font-bold text-lg shadow-lg shadow-blue-200 active:bg-blue-600 transition-colors">
-          חזרה לתפריט
+        <button onClick={finishQuiz} className="w-full py-4 bg-blue-500 text-white rounded-xl font-bold text-lg shadow-lg shadow-blue-200 active:bg-blue-600 transition-colors">
+          סיום ושמירת התקדמות
         </button>
       </div>
     );
@@ -1737,7 +1740,7 @@ const QuizView = ({ quizState, currentLesson, handleAnswer, nextQuestion, closeQ
   );
 };
 
-const ChatView = ({ chatMessages, chatInput, setChatInput, handleSendMessage, isChatLoading, handleResetChat, setChatMessages }) => {
+const ChatView = ({ chatMessages, chatInput, setChatInput, handleSendMessage, isChatLoading, handleResetChat, setChatMessages, handleTutorInitiate }) => {
   const chatEndRef = useRef(null);
 
   useEffect(() => {
@@ -1762,9 +1765,20 @@ const ChatView = ({ chatMessages, chatInput, setChatInput, handleSendMessage, is
             </h1>
             <p className="text-xs text-gray-500">תרגל אנגלית בשיחה חופשית</p>
           </div>
-          <button onClick={handleResetChat} className="p-2 bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 transition-colors" title="שיחה חדשה">
-            <RefreshCw size={20} />
-          </button>
+          <div className="flex items-center space-x-2 space-x-reverse">
+            <button
+              onClick={handleTutorInitiate}
+              disabled={isChatLoading}
+              className="flex items-center space-x-1 space-x-reverse bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-3 py-1.5 rounded-full text-xs font-bold hover:shadow-md transition-all active:scale-95 disabled:opacity-50"
+              title="בקש מהמורה להתחיל את השיחה"
+            >
+              <Sparkles size={14} />
+              <span>המורה מתחיל</span>
+            </button>
+            <button onClick={handleResetChat} className="p-2 bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 transition-colors" title="שיחה חדשה">
+              <RefreshCw size={20} />
+            </button>
+          </div>
         </div>
 
         {/* Scenarios */}
@@ -1782,7 +1796,7 @@ const ChatView = ({ chatMessages, chatInput, setChatInput, handleSendMessage, is
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-4" dir="ltr">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 overlay-scrollbar" dir="ltr">
         {chatMessages.map((msg, idx) => (
           <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
             <div className={`max-w-[80%] p-3 rounded-2xl ${msg.role === 'user' ? 'bg-blue-500 text-white rounded-tr-none' : 'bg-white border border-gray-200 text-gray-800 rounded-tl-none shadow-sm'}`}>
@@ -1856,10 +1870,11 @@ const ReadingView = ({
     setExplanation(null);
   }, [currentStory, setExplanation]);
 
+  const materials = data.readingMaterials || [];
   const levels = ['הכל', 'קל', 'בינוני', 'מתקדם'];
-  const categories = ['הכל', ...new Set(data.readingMaterials.map(item => item.category))];
+  const categories = ['הכל', ...new Set(materials.map(item => item.category))];
 
-  const filteredStories = data.readingMaterials.filter(item => {
+  const filteredStories = materials.filter(item => {
     const typeMatch = item.type === readingType;
     const levelMatch = readingLevelFilter === 'הכל' ? true : item.level === readingLevelFilter;
     const categoryMatch = readingCategoryFilter === 'הכל' ? true : item.category === readingCategoryFilter;
@@ -2095,9 +2110,35 @@ const ReadingView = ({
   );
 };
 
-const ProfileView = ({ data }) => {
+const ProfileView = ({ data, updateUserData, handleGoogleLogin, auth }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [tempName, setTempName] = useState(data.user.name);
+  const [imgError, setImgError] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
+
+  const avatarURL = data?.user?.photoURL || auth.currentUser?.photoURL || null;
+
+  useEffect(() => {
+    // reset image state when avatar source changes
+    setImgError(false);
+    setImgLoaded(false);
+  }, [avatarURL]);
+
+  // Check if guest (anonymous OR no email)
+  const isGuest = auth.currentUser?.isAnonymous || !auth.currentUser?.email;
+
+  const handleSaveProfile = () => {
+    if (tempName.trim()) {
+      updateUserData({
+        ...data,
+        user: { ...data.user, name: tempName }
+      });
+      setIsEditing(false);
+    }
+  };
+
   return (
-    <div className="p-6 pb-24 h-full bg-gray-50 overflow-y-auto">
+    <div className="p-6 pb-24 h-full bg-gray-50 overflow-y-auto overlay-scrollbar">
       {/* Header */}
       <div className="flex justify-between items-start mb-6">
         <h1 className="text-2xl font-bold text-gray-800">הפרופיל שלי</h1>
@@ -2111,15 +2152,79 @@ const ProfileView = ({ data }) => {
         <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-r from-blue-500 to-blue-400 z-0"></div>
         <div className="w-24 h-24 bg-white rounded-full p-1 z-10 mb-3 shadow-md relative">
           <div className="w-full h-full bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-            <User size={40} className="text-gray-400" />
+            {avatarURL && !imgError ? (
+              <img
+                src={avatarURL}
+                alt="Profile"
+                className={`w-full h-full object-cover ${imgLoaded ? '' : 'opacity-0'}`}
+                loading="lazy"
+                decoding="async"
+                crossOrigin="anonymous"
+                referrerPolicy="no-referrer"
+                onLoad={() => setImgLoaded(true)}
+                onError={(e) => {
+                  setImgError(true);
+                  try {
+                    e.currentTarget.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+                  } catch (err) { }
+                }}
+              />
+            ) : (
+              <User size={40} className="text-gray-400" />
+            )}
+            {/* show a simple placeholder while the image is loading */}
+            {avatarURL && !imgLoaded && !imgError && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
+              </div>
+            )}
           </div>
-          <button className="absolute bottom-0 right-0 bg-blue-500 text-white p-1.5 rounded-full shadow-sm hover:bg-blue-600">
+          {/* <button onClick={() => setIsEditing(true)} className="absolute bottom-0 right-0 bg-blue-500 text-white p-1.5 rounded-full shadow-sm hover:bg-blue-600" title="ערוך שם משתמש">
             <Edit3 size={14} />
+          </button> */}
+        </div>
+
+        {isEditing ? (
+          <div className="z-10 flex flex-col items-center gap-2 w-full max-w-xs animate-fade-in">
+            <label className="text-xs text-gray-500">שם משתמש:</label>
+            <input
+              type="text"
+              value={tempName}
+              onChange={(e) => setTempName(e.target.value)}
+              className="w-full text-center text-lg font-bold text-gray-800 border-b-2 border-blue-500 focus:outline-none bg-transparent"
+              autoFocus
+            />
+            <div className="flex gap-2 mt-2">
+              <button onClick={handleSaveProfile} className="bg-green-500 text-white px-3 py-1 rounded-lg text-sm font-bold shadow-sm">שמור</button>
+              <button onClick={() => { setIsEditing(false); setTempName(data.user.name); }} className="bg-gray-200 text-gray-600 px-3 py-1 rounded-lg text-sm font-bold shadow-sm">ביטול</button>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="flex items-center gap-2 z-10">
+              <h2 className="text-xl font-bold text-gray-800">{data.user.name}</h2>
+              <button onClick={() => setIsEditing(true)} className="text-gray-400 hover:text-blue-500">
+                <Edit3 size={16} />
+              </button>
+            </div>
+            <p className="text-gray-500 text-sm z-10 mt-1">רמה {data.user.level} • {isGuest ? 'אורח' : 'מחובר'}</p>
+          </>
+        )}
+      </div>
+
+      {/* Login Promo if Guest */}
+      {isGuest && (
+        <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-4 text-white shadow-lg mb-6 flex items-center justify-between">
+          <div>
+            <h3 className="font-bold">שמור את ההתקדמות שלך!</h3>
+            <p className="text-xs text-indigo-100">התחבר כדי לא לאבד את הנתונים</p>
+          </div>
+          <button onClick={handleGoogleLogin} className="bg-white text-indigo-600 px-4 py-2 rounded-xl font-bold text-sm shadow-sm hover:bg-indigo-50 flex items-center gap-2">
+            <LogIn size={16} />
+            Google
           </button>
         </div>
-        <h2 className="text-xl font-bold text-gray-800 z-10">{data.user.name}</h2>
-        <p className="text-gray-500 text-sm z-10">רמה {data.user.level} • תלמיד מתמיד</p>
-      </div>
+      )}
 
       {/* Stats Grid */}
       <div className="grid grid-cols-2 gap-4 mb-8">
@@ -2179,9 +2284,18 @@ const ProfileView = ({ data }) => {
             <div className="absolute top-1 left-1 w-4 h-4 bg-white rounded-full"></div>
           </div>
         </button>
-        <button className="w-full bg-white p-4 rounded-xl border border-gray-200 flex items-center text-red-500 active:scale-[0.99] transition-transform mt-4">
+
+        {/* Fallback Login Button in Menu */}
+        {isGuest && (
+          <button onClick={handleGoogleLogin} className="w-full bg-white p-4 rounded-xl border border-gray-200 flex items-center text-indigo-600 active:scale-[0.99] transition-transform font-bold">
+            <LogIn size={20} className="ml-3" />
+            <span>התחבר עם Google</span>
+          </button>
+        )}
+
+        <button onClick={() => auth.signOut()} className="w-full bg-white p-4 rounded-xl border border-gray-200 flex items-center text-red-500 active:scale-[0.99] transition-transform mt-4">
           <LogOut size={20} className="ml-3" />
-          <span>התנתק</span>
+          <span>{isGuest ? 'אפס נתונים (התנתק)' : 'התנתק'}</span>
         </button>
       </div>
     </div>
@@ -2247,7 +2361,7 @@ const GrammarLabModal = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto overlay-scrollbar">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-bold text-gray-800 flex items-center">
             <Microscope size={20} className="ml-2 text-teal-600" />
@@ -2490,7 +2604,7 @@ const WritingCoachModal = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto overlay-scrollbar">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl font-bold text-gray-800 flex items-center">
             <PenTool size={20} className="ml-2 text-blue-500" />
@@ -2565,7 +2679,115 @@ const WritingCoachModal = ({ isOpen, onClose }) => {
 // --- Main App Component ---
 
 const App = () => {
-  const [data, setData] = useState(MOCK_DB);
+  // Firebase Auth State
+  const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(true);
+
+  // App Data State
+  const [data, setData] = useState(null); // Data loaded from Firebase
+
+  // Use shared Firebase app/auth instance from `src/firebase.ts`
+  const app = firebaseApp;
+  const auth = firebaseAuth;
+  const db = getFirestore(app);
+  const appId = typeof import.meta.env.VITE_FIREBASE_PROJECT_ID !== 'undefined' ? import.meta.env.VITE_FIREBASE_PROJECT_ID : 'default-app-id';
+  // Google Auth Provider
+  const googleProvider = new GoogleAuthProvider();
+
+  // --- Auth & Data Loading Effect ---
+  useEffect(() => {
+    // Ensure auth persistence is local so the user stays signed in across refreshes
+    setPersistence(auth, browserLocalPersistence).catch((e) => console.warn('Failed to set persistence', e));
+
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setAuthLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  // --- Firestore Data Sync Effect ---
+  useEffect(() => {
+    if (!user) return;
+
+    const docRef = doc(db, 'artifacts', appId, 'users', user.uid, 'data', 'profile');
+
+    const unsubscribeData = onSnapshot(docRef, (snapshot) => {
+      if (snapshot.exists()) {
+        // MERGE: Ensure we combine existing data with INITIAL_DB to fill gaps
+        const fetchedData = snapshot.data();
+        setData({
+          ...MOCK_DB,
+          ...fetchedData,
+          // Ensure arrays exist even if empty in fetched data
+          lessons: fetchedData.lessons || MOCK_DB.lessons,
+          readingMaterials: fetchedData.readingMaterials || MOCK_DB.readingMaterials,
+          // Merge user but prefer stored values, then auth profile fields as fallback
+          user: {
+            ...MOCK_DB.user,
+            ...fetchedData.user,
+            name: (fetchedData.user && fetchedData.user.name) || (auth.currentUser?.displayName) || MOCK_DB.user.name,
+            photoURL: (fetchedData.user && fetchedData.user.photoURL) || auth.currentUser?.photoURL || null,
+            email: (fetchedData.user && fetchedData.user.email) || auth.currentUser?.email || null
+          }
+        });
+      } else {
+        // Initialize new user data if it doesn't exist
+        const newData = { ...MOCK_DB, user: { ...MOCK_DB.user, name: user.displayName || "אורח", photoURL: user.photoURL || null, email: user.email || null } };
+        setDoc(docRef, newData);
+        setData(newData);
+      }
+    }, (error) => {
+      console.error("Firestore error:", error);
+    });
+
+    return () => unsubscribeData();
+  }, [user]);
+
+  // When the user signs out, clear loaded user data so UI shows guest defaults
+  useEffect(() => {
+    if (!user) {
+      setData(null);
+      setActiveTab('home');
+    }
+  }, [user]);
+
+  // --- Helper to update State AND Firebase ---
+  const updateUserData = async (newData) => {
+    if (!user || !newData) return;
+    setData(newData); // Optimistic UI update
+    try {
+      const docRef = doc(db, 'artifacts', appId, 'users', user.uid, 'data', 'profile');
+      await setDoc(docRef, newData);
+    } catch (e) {
+      console.error("Error saving data:", e);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      const code = error?.code || '';
+      const msg = error?.message || '';
+      // If popup is blocked or COOP prevents popup messaging, fall back to redirect
+      if (code === 'auth/popup-blocked' || msg.includes('Cross-Origin-Opener-Policy') || msg.includes('window.closed') || code === 'auth/cancelled-popup-request') {
+        console.warn('Popup blocked or COOP issue; falling back to redirect auth.', error);
+        try {
+          await signInWithRedirect(auth, provider);
+        } catch (redirErr) {
+          console.error('Redirect sign-in failed', redirErr);
+          alert('שגיאה בהתחברות עם גוגל (redirect) — בדוק הגדרות דפדפן ו-popups');
+        }
+      } else {
+        console.error('Google sign in error', error);
+        alert('שגיאה בהתחברות עם גוגל');
+      }
+    }
+  };
+
+  // --- Existing State ---
   const [activeTab, setActiveTab] = useState('home');
   const [currentLesson, setCurrentLesson] = useState(null);
   const [currentStory, setCurrentStory] = useState(null);
@@ -2574,33 +2796,27 @@ const App = () => {
   const [readingLevelFilter, setReadingLevelFilter] = useState('הכל');
   const [readingCategoryFilter, setReadingCategoryFilter] = useState('הכל');
 
-  // Chat State
   const [chatMessages, setChatMessages] = useState([
     { role: 'model', text: 'Hello! I am your AI English tutor. How are you today?' }
   ]);
   const [isChatLoading, setIsChatLoading] = useState(false);
   const [chatInput, setChatInput] = useState('');
 
-  // Story Explanation State
   const [isExplaining, setIsExplaining] = useState(false);
   const [explanation, setExplanation] = useState(null);
 
-  // Story Generation State
   const [isGeneratingStory, setIsGeneratingStory] = useState(false);
   const [showGenerateModal, setShowGenerateModal] = useState(false);
   const [genTopic, setGenTopic] = useState('');
   const [genLevel, setGenLevel] = useState('קל');
 
-  // Daily Tip State
   const [dailyTip, setDailyTip] = useState("Did you know? 'I am' is the shortest complete sentence in the English language.");
   const [isTipLoading, setIsTipLoading] = useState(false);
 
-  // Modals State
   const [showWritingModal, setShowWritingModal] = useState(false);
   const [showGrammarModal, setShowGrammarModal] = useState(false);
   const [showIdiomModal, setShowIdiomModal] = useState(false);
 
-  // Quiz Generation State
   const [isGeneratingQuiz, setIsGeneratingQuiz] = useState(false);
 
   const [quizState, setQuizState] = useState({
@@ -2631,6 +2847,30 @@ const App = () => {
       console.error("Tip error", e);
     } finally {
       setIsTipLoading(false);
+    }
+  };
+
+  const handleTutorInitiate = async () => {
+    setIsChatLoading(true);
+    try {
+      const apiKey = "";
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [
+            { role: "user", parts: [{ text: "You are an energetic English tutor. The student wants you to take the lead. Introduce a new, interesting random topic (like travel, movies, food, future technology, or hobbies) and ask the student a specific, engaging question about it to get them talking. Keep it friendly and concise." }] }
+          ]
+        })
+      });
+      const data = await response.json();
+      const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Let's talk! What is your favorite hobby?";
+      setChatMessages(prev => [...prev, { role: 'model', text: reply }]);
+    } catch (e) {
+      console.error(e);
+      setChatMessages(prev => [...prev, { role: 'model', text: "Error connecting to AI." }]);
+    } finally {
+      setIsChatLoading(false);
     }
   };
 
@@ -2740,10 +2980,12 @@ const App = () => {
         newStory.category = "AI Generated";
         newStory.type = 'story';
 
-        setData(prev => ({
-          ...prev,
-          readingMaterials: [newStory, ...prev.readingMaterials]
-        }));
+        // Update local state AND Firebase
+        const updatedData = {
+          ...data,
+          readingMaterials: [newStory, ...data.readingMaterials]
+        };
+        updateUserData(updatedData);
 
         setShowGenerateModal(false);
         setCurrentStory(newStory);
@@ -2788,7 +3030,6 @@ const App = () => {
       const data = await response.json();
       const generatedQuiz = JSON.parse(data.candidates?.[0]?.content?.parts?.[0]?.text);
 
-      // Start the generated lesson immediately
       startLesson(generatedQuiz);
 
     } catch (e) {
@@ -2820,17 +3061,43 @@ const App = () => {
     }
   };
 
+  const finishQuiz = () => {
+    // Calculate XP and update Firebase
+    const xpEarned = quizState.score * 10;
+    const updatedData = {
+      ...data,
+      user: {
+        ...data.user,
+        xp: data.user.xp + xpEarned,
+        streak: data.user.streak // Logic to increase streak could go here if checking dates
+      }
+    };
+    updateUserData(updatedData);
+
+    setQuizState(prev => ({ ...prev, active: false }));
+    setActiveTab('home'); // Go to home after finish to see XP
+  };
+
   const closeQuiz = () => {
     setQuizState(prev => ({ ...prev, active: false }));
     setActiveTab('learn');
   };
 
+  if (authLoading || (user && !data)) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-gray-50 flex-col gap-4">
+        <Loader2 className="animate-spin text-blue-500" size={48} />
+        <p className="text-gray-500 animate-pulse">טוען את הפרופיל שלך מהענן...</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-gray-50 min-h-screen min-w-screen font-sans text-right" dir="rtl">
-      {activeTab === 'home' && <HomeView data={data} startLesson={startLesson} dailyTip={dailyTip} isTipLoading={isTipLoading} fetchDailyTip={fetchDailyTip} />}
+    <div className="bg-gray-50 min-h-screen font-sans text-right" dir="rtl">
+      {activeTab === 'home' && <HomeView data={data || MOCK_DB} startLesson={startLesson} dailyTip={dailyTip} isTipLoading={isTipLoading} fetchDailyTip={fetchDailyTip} />}
       {activeTab === 'learn' &&
         <LearnView
-          data={data}
+          data={data || MOCK_DB}
           startLesson={startLesson}
           setActiveTab={setActiveTab}
           setShowWritingModal={setShowWritingModal}
@@ -2841,10 +3108,10 @@ const App = () => {
         />}
       {activeTab === 'abc' && <AbcView setActiveTab={setActiveTab} />}
       {activeTab === 'numbers' && <NumberView setActiveTab={setActiveTab} />}
-      {activeTab === 'quiz' && <QuizView quizState={quizState} currentLesson={currentLesson} handleAnswer={handleAnswer} nextQuestion={nextQuestion} closeQuiz={closeQuiz} />}
+      {activeTab === 'quiz' && <QuizView quizState={quizState} currentLesson={currentLesson} handleAnswer={handleAnswer} nextQuestion={nextQuestion} closeQuiz={closeQuiz} finishQuiz={finishQuiz} />}
       {activeTab === 'reading' && (
         <ReadingView
-          data={data}
+          data={data || MOCK_DB}
           currentStory={currentStory}
           setCurrentStory={setCurrentStory}
           readingType={readingType}
@@ -2876,9 +3143,10 @@ const App = () => {
           isChatLoading={isChatLoading}
           handleResetChat={handleResetChat}
           setChatMessages={setChatMessages}
+          handleTutorInitiate={handleTutorInitiate}
         />
       )}
-      {activeTab === 'profile' && <ProfileView data={data} />}
+      {activeTab === 'profile' && <ProfileView data={data || MOCK_DB} updateUserData={updateUserData} handleGoogleLogin={handleGoogleLogin} auth={auth} />}
 
       <WritingCoachModal isOpen={showWritingModal} onClose={() => setShowWritingModal(false)} />
       <GrammarLabModal isOpen={showGrammarModal} onClose={() => setShowGrammarModal(false)} />

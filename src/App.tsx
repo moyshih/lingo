@@ -80,7 +80,7 @@ const MOCK_DB = {
         { id: 14, en: "Blue", he: "כחול", options: ["לבן", "כחול", "שחור", "חום"] },
         { id: 15, en: "Yellow", he: "צהוב", options: ["וורוד", "סגול", "צהוב", "אפור"] },
         { id: 64, en: "Green", he: "ירוק", options: ["ירוק", "סגול", "כחול", "חום"] },
-        { id: 65, en: "Black", he: "שחור", options: ["לבן", "שחור", "צהוב", "בורח"] },
+        { id: 65, en: "Black", he: "שחור", options: ["לבן", "שחור", "צהוב", "כחול"] },
         { id: 66, en: "White", he: "לבן", options: ["שחור", "לבן", "ורוד", "אפור"] },
         { id: 67, en: "Purple", he: "סגול", options: ["סגול", "חום", "ירוק", "שחור"] },
         { id: 68, en: "Orange", he: "כתום", options: ["כתום", "כחול", "ירוק", "אדום"] },
@@ -1674,22 +1674,38 @@ const QuizView = ({ quizState, currentLesson, handleAnswer, nextQuestion, closeQ
             </button>
           </div>
           <div className="w-full space-y-3">
-            {currentWord.options.map((option, idx) => {
-              const isSelected = quizState.selectedAnswer === option;
-              let buttonStyle = "bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50";
-              if (quizState.showResult) {
-                if (option === currentWord.he) buttonStyle = "bg-green-100 border-green-500 text-green-700";
-                else if (isSelected) buttonStyle = "bg-red-100 border-red-500 text-red-700";
-                else buttonStyle = "opacity-50 border-gray-100";
-              } else if (isSelected) {
-                buttonStyle = "bg-blue-50 border-blue-500 text-blue-700";
-              }
-              return (
-                <button key={idx} disabled={quizState.showResult} onClick={() => handleAnswer(option)} className={`w-full p-4 rounded-xl text-lg font-medium transition-all ${buttonStyle} shadow-sm`}>
-                  {option}
-                </button>
-              );
-            })}
+            {(() => {
+              const shuffleArray = (arr) => {
+                const a = [...arr];
+                for (let i = a.length - 1; i > 0; i--) {
+                  const j = Math.floor(Math.random() * (i + 1));
+                  [a[i], a[j]] = [a[j], a[i]];
+                }
+                return a;
+              };
+
+              const options = React.useMemo(() => {
+                if (!currentWord || !currentWord.options) return [];
+                return shuffleArray(currentWord.options);
+              }, [currentWord, quizState.currentQuestionIndex]);
+
+              return options.map((option, idx) => {
+                const isSelected = quizState.selectedAnswer === option;
+                let buttonStyle = "bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50";
+                if (quizState.showResult) {
+                  if (option === currentWord.he) buttonStyle = "bg-green-100 border-green-500 text-green-700";
+                  else if (isSelected) buttonStyle = "bg-red-100 border-red-500 text-red-700";
+                  else buttonStyle = "opacity-50 border-gray-100";
+                } else if (isSelected) {
+                  buttonStyle = "bg-blue-50 border-blue-500 text-blue-700";
+                }
+                return (
+                  <button key={idx} disabled={quizState.showResult} onClick={() => handleAnswer(option)} className={`w-full p-4 rounded-xl text-lg font-medium transition-all ${buttonStyle} shadow-sm`}>
+                    {option}
+                  </button>
+                );
+              });
+            })()}
           </div>
         </div>
       </div>

@@ -53,66 +53,66 @@ const HomeView = ({ data, startLesson, dailyTip, isTipLoading, fetchDailyTip, is
   }, [data.lessons]);
 
   return (
-  <div className="p-6 space-y-6 pb-24 animate-fade-in">
-    <header className="flex justify-between items-center">
-      <div>
-        <h1 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>היי, {(data.user.name || '').split(/\s+/)[0]} 👋</h1>
-        <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>בוא נמשיך ללמוד!</p>
-      </div>
-      <div className={`flex items-center space-x-2 space-x-reverse px-3 py-1 rounded-full border ${isDarkMode ? 'bg-orange-900/30 border-orange-800 text-orange-400' : 'bg-orange-100 border-orange-200 text-orange-700'}`}>
-        <Zap className="fill-current" size={18} />
-        <span className="font-bold">{data.user.streak} ימים</span>
-      </div>
-    </header>
-
-    <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-5 text-white shadow-lg relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full bg-white/10 transform rotate-12 -translate-y-1/2 translate-x-1/2"></div>
-      <div className="relative z-10">
-        <div className="flex justify-between items-start mb-3">
-          <h3 className="font-bold text-lg flex items-center">
-            <Lightbulb size={20} className="ml-2 text-yellow-300" />
-            טיפ יומי
-          </h3>
-          <button onClick={fetchDailyTip} className="p-1.5 bg-white/20 rounded-full hover:bg-white/30 transition-colors" disabled={isTipLoading}>
-            <RefreshCw size={16} className={isTipLoading ? "animate-spin" : ""} />
-          </button>
+    <div className="p-6 space-y-6 pb-24 animate-fade-in">
+      <header className="flex justify-between items-center">
+        <div>
+          <h1 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>היי, {(data.user.name || '').split(/\s+/)[0]} 👋</h1>
+          <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>בוא נמשיך ללמוד!</p>
         </div>
-        <div className="bg-white/10 p-3 rounded-xl backdrop-blur-sm text-sm leading-relaxed min-h-[60px]">
-          {isTipLoading ? "מחפש טיפ מעניין..." : dailyTip}
+        <div className={`flex items-center space-x-2 space-x-reverse px-3 py-1 rounded-full border ${isDarkMode ? 'bg-orange-900/30 border-orange-800 text-orange-400' : 'bg-orange-100 border-orange-200 text-orange-700'}`}>
+          <Zap className="fill-current" size={18} />
+          <span className="font-bold">{data.user.streak} ימים</span>
         </div>
-      </div>
-    </div>
+      </header>
 
-    {recommendedLesson && (
-      <div className="space-y-3">
-        <h2 className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>מומלץ עבורך</h2>
-        <div onClick={() => startLesson(recommendedLesson)} className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4 space-x-reverse active:scale-95 transition-transform cursor-pointer`}>
-          <div className={`w-12 h-12 ${recommendedLesson.color || 'bg-gray-200'} rounded-full flex items-center justify-center text-2xl`}>{recommendedLesson.icon}</div>
-          <div className="flex-1">
-            <h3 className={`font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{recommendedLesson.title}</h3>
-            <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-800'}`}>10 מילים חדשות • 3 דקות</p>
+      <div className="bg-linear-to-br from-indigo-600 to-purple-700 rounded-2xl p-5 text-white shadow-lg relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full bg-white/10 transform rotate-12 -translate-y-1/2 translate-x-1/2"></div>
+        <div className="relative z-10">
+          <div className="flex justify-between items-start mb-3">
+            <h3 className="font-bold text-lg flex items-center">
+              <Lightbulb size={20} className="ml-2 text-yellow-300" />
+              טיפ יומי
+            </h3>
+            <button onClick={fetchDailyTip} className="p-1.5 bg-white/20 rounded-full hover:bg-white/30 transition-colors" disabled={isTipLoading}>
+              <RefreshCw size={16} className={isTipLoading ? "animate-spin" : ""} />
+            </button>
           </div>
-          <ChevronLeft className="text-gray-300 rotate-180" />
+          <div className="bg-white/10 p-3 rounded-xl backdrop-blur-sm text-sm leading-relaxed min-h-[60px]">
+            {isTipLoading ? "מחפש טיפ מעניין..." : dailyTip}
+          </div>
         </div>
       </div>
-    )}
 
-    <div className="space-y-3">
-      <h2 className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>סטטיסטיקה</h2>
-      <div className="grid grid-cols-2 gap-4">
-        <div className={`p-4 rounded-xl border flex flex-col items-center justify-center py-6 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
-          <Award className="text-yellow-500 mb-2" size={32} />
-          <span className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{data.user.xp}</span>
-          <span className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`}>XP צבור</span>
+      {recommendedLesson && (
+        <div className="space-y-3">
+          <h2 className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>מומלץ עבורך</h2>
+          <div onClick={() => startLesson(recommendedLesson)} className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4 space-x-reverse active:scale-95 transition-transform cursor-pointer`}>
+            <div className={`w-12 h-12 ${recommendedLesson.color || 'bg-gray-200'} rounded-full flex items-center justify-center text-2xl`}>{recommendedLesson.icon}</div>
+            <div className="flex-1">
+              <h3 className={`font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{recommendedLesson.title}</h3>
+              <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-800'}`}>10 מילים חדשות • 3 דקות</p>
+            </div>
+            <ChevronLeft className="text-gray-300 rotate-180" />
+          </div>
         </div>
-        <div className={`p-4 rounded-xl border flex flex-col items-center justify-center py-6 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
-          <Star className="text-purple-500 mb-2" size={32} />
-          <span className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{data.user.level}</span>
-          <span className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`}>רמה נוכחית</span>
+      )}
+
+      <div className="space-y-3">
+        <h2 className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>סטטיסטיקה</h2>
+        <div className="grid grid-cols-2 gap-4">
+          <div className={`p-4 rounded-xl border flex flex-col items-center justify-center py-6 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
+            <Award className="text-yellow-500 mb-2" size={32} />
+            <span className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{data.user.xp}</span>
+            <span className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`}>XP צבור</span>
+          </div>
+          <div className={`p-4 rounded-xl border flex flex-col items-center justify-center py-6 ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
+            <Star className="text-purple-500 mb-2" size={32} />
+            <span className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{data.user.level}</span>
+            <span className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`}>רמה נוכחית</span>
+          </div>
         </div>
       </div>
     </div>
-  </div>
   );
 };
 
@@ -124,23 +124,23 @@ const LearnView = ({ data, startLesson, setActiveTab, setShowWritingModal, handl
       <h1 className={`text-2xl font-bold mb-6 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>מסלול הלימוד</h1>
 
       <div className="grid grid-cols-2 gap-4 mb-6">
-        <div onClick={() => setActiveTab('abc')} className="bg-gradient-to-br from-purple-600 to-indigo-700 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-20">
+        <div onClick={() => setActiveTab('abc')} className="bg-linear-to-br from-purple-600 to-indigo-700 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-20">
           <div className="text-4xl mb-1">🔤</div>
           <span className="font-bold text-sm">לוח אותיות</span>
         </div>
-        <div onClick={() => setActiveTab('numbers')} className="bg-gradient-to-br from-yellow-600 to-amber-700 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-20">
+        <div onClick={() => setActiveTab('numbers')} className="bg-linear-to-br from-yellow-600 to-amber-700 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-20">
           <div className="text-4xl mb-1">🔢</div>
           <span className="font-bold text-sm">לוח מספרים</span>
         </div>
-        {/* <div onClick={() => setShowWritingModal(true)} className="bg-gradient-to-br from-blue-600 to-cyan-700 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-32">
+        {/* <div onClick={() => setShowWritingModal(true)} className="bg-linear-to-br from-blue-600 to-cyan-700 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-32">
           <div className="text-4xl mb-2">✍️</div>
           <span className="font-bold text-sm">מאמן כתיבה (AI)</span>
         </div>
-        <div onClick={() => setShowGrammarModal(true)} className="bg-gradient-to-br from-teal-500 to-emerald-700 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-32">
+        <div onClick={() => setShowGrammarModal(true)} className="bg-linear-to-br from-teal-500 to-emerald-700 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-32">
           <div className="text-4xl mb-2">🔬</div>
           <span className="font-bold text-sm">מעבדת דקדוק (AI)</span>
         </div>
-        <div onClick={handleGenerateIdiom} className="bg-gradient-to-br from-pink-600 to-rose-700 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-32">
+        <div onClick={handleGenerateIdiom} className="bg-linear-to-br from-pink-600 to-rose-700 p-4 rounded-xl shadow-md flex flex-col items-center justify-center cursor-pointer active:scale-95 transition-transform text-white h-32">
           <div className="text-4xl mb-2">🎨</div>
           <span className="font-bold text-sm">ניב בהפתעה (AI)</span>
         </div> */}
@@ -300,7 +300,7 @@ const NumberView = ({ setActiveTab, isDarkMode }) => {
   );
 };
 
-const QuizView = ({ quizState, currentLesson, handleAnswer, nextQuestion, closeQuiz, finishQuiz, isDarkMode }) => {
+const QuizView = ({ quizState, currentLesson, handleAnswer, nextQuestion, closeQuiz, finishQuiz, restartQuiz, playNextLesson, hasNextLesson, isDarkMode }) => {
   const speakWord = (text) => {
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
@@ -311,13 +311,14 @@ const QuizView = ({ quizState, currentLesson, handleAnswer, nextQuestion, closeQ
 
   if (quizState.completed) {
     return (
-      <div className={`h-full flex flex-col items-center justify-center p-8 text-center ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
+      <div className={`min-h-screen flex flex-col items-center justify-center p-8 text-center ${isDarkMode ? 'bg-gray-900' : 'bg-white'}`}>
         <div className={`w-32 h-32 rounded-full flex items-center justify-center mb-6 animate-bounce ${isDarkMode ? 'bg-yellow-900/30' : 'bg-yellow-100'}`}>
           <Trophy size={64} className="text-yellow-500" />
         </div>
         <h2 className={`text-3xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>כל הכבוד!</h2>
         <p className="text-gray-500 mb-8">סיימת את השיעור בהצלחה</p>
-        <div className="grid grid-cols-2 gap-4 w-full mb-8">
+
+        <div className="grid grid-cols-2 gap-4 w-full mb-16">
           <div className={`p-4 rounded-xl text-center ${isDarkMode ? 'bg-green-900/30' : 'bg-green-50'}`}>
             <span className="block text-2xl font-bold text-green-600">{quizState.score}/{currentLesson.words.length}</span>
             <span className="text-sm text-green-800">תשובות נכונות</span>
@@ -327,9 +328,23 @@ const QuizView = ({ quizState, currentLesson, handleAnswer, nextQuestion, closeQ
             <span className="text-sm text-orange-800">XP</span>
           </div>
         </div>
-        <button onClick={finishQuiz} className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold text-lg shadow-lg active:bg-blue-700 transition-colors">
-          סיום ושמירת התקדמות
-        </button>
+
+        <div className="flex flex-col w-full gap-3">
+
+          {hasNextLesson && (
+            <button onClick={playNextLesson} className="flex-1 py-4 bg-blue-600 text-white rounded-xl font-bold text-lg shadow-lg active:bg-blue-700 transition-colors">
+              משחק הבא ⏭️
+            </button>
+          )}
+          <div className="flex w-full gap-3">
+            <button onClick={restartQuiz} className={`flex-1 py-4 rounded-xl font-bold text-lg shadow-sm transition-colors ${isDarkMode ? 'bg-gray-800 text-gray-300 hover:bg-gray-700' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}>
+              שחק שוב 🔄
+            </button>
+            <button onClick={finishQuiz} className={`flex-1 py-4 rounded-xl font-bold text-lg shadow-sm transition-colors ${isDarkMode ? 'bg-purple-900/50 text-purple-300 hover:bg-purple-900' : 'bg-purple-100 text-purple-700 hover:bg-purple-200'}`}>
+              סיום
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -457,7 +472,7 @@ const ChatView = ({ chatMessages, chatInput, setChatInput, handleSendMessage, is
             <button
               onClick={handleTutorInitiate}
               disabled={isChatLoading}
-              className="flex items-center space-x-1 space-x-reverse bg-gradient-to-r from-indigo-500 to-purple-600 text-white px-3 py-1.5 rounded-full text-xs font-bold hover:shadow-md transition-all active:scale-95 disabled:opacity-50"
+              className="flex items-center space-x-1 space-x-reverse bg-linear-to-r from-indigo-500 to-purple-600 text-white px-3 py-1.5 rounded-full text-xs font-bold hover:shadow-md transition-all active:scale-95 disabled:opacity-50"
               title="בקש מהמורה להתחיל את השיחה"
             >
               <Sparkles size={14} />
@@ -740,17 +755,17 @@ const ReadingView = ({
         </button>
       </div>
 
-      <div className="flex space-x-2 space-x-reverse mb-4 overflow-x-auto pb-2 scrollbar-hide">
+      <div className="flex space-x-2 space-x-reverse mb-4 overflow-x-auto pb-2 scrollbar-hide gap-2">
         {levels.map(level => (
-          <button key={level} onClick={() => setReadingLevelFilter(level)} className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors border ${readingLevelFilter === level ? 'bg-blue-600 text-white border-blue-600' : isDarkMode ? 'bg-gray-800 text-gray-300 border-gray-700' : 'bg-white text-gray-600 border-gray-200'}`}>
+          <button key={level} onClick={() => setReadingLevelFilter(level)} className={`px-4 py-2 m-0 rounded-full text-sm font-medium whitespace-nowrap transition-colors border ${readingLevelFilter === level ? 'bg-blue-600 text-white border-blue-600' : isDarkMode ? 'bg-gray-800 text-gray-300 border-gray-700' : 'bg-white text-gray-600 border-gray-200'}`}>
             {level}
           </button>
         ))}
       </div>
 
-      <div className="flex space-x-2 space-x-reverse mb-6 overflow-x-auto pb-2 scrollbar-hide">
+      <div className="flex space-x-2 space-x-reverse mb-6 overflow-x-auto pb-2 scrollbar-hide gap-2">
         {categories.map(cat => (
-          <button key={cat} onClick={() => setReadingCategoryFilter(cat)} className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-colors border flex items-center space-x-2 space-x-reverse ${readingCategoryFilter === cat ? 'bg-orange-100 text-orange-700 border-orange-200' : isDarkMode ? 'bg-gray-800 text-gray-400 border-gray-700 hover:bg-gray-700' : 'bg-white text-gray-500 border-gray-100 hover:bg-gray-50'}`}>
+          <button key={cat} onClick={() => setReadingCategoryFilter(cat)} className={`px-3 py-1.5 m-0 rounded-lg text-xs font-medium whitespace-nowrap transition-colors border flex items-center space-x-2 space-x-reverse ${readingCategoryFilter === cat ? 'bg-orange-100 text-orange-700 border-orange-200' : isDarkMode ? 'bg-gray-800 text-gray-400 border-gray-700 hover:bg-gray-700' : 'bg-white text-gray-500 border-gray-100 hover:bg-gray-50'}`}>
             {cat === 'Work' && <Briefcase size={12} />}
             {cat === 'Social' && <Coffee size={12} />}
             {cat === 'Travel' && <Globe size={12} />}
@@ -844,7 +859,7 @@ const ProfileView = ({ data, updateUserData, handleGoogleLogin, auth, isDarkMode
 
       {/* User Card */}
       <div className={`p-6 rounded-2xl shadow-sm border flex flex-col items-center mb-6 relative overflow-hidden ${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'}`}>
-        <div className="absolute top-0 left-0 w-full h-24 bg-gradient-to-r from-blue-500 to-blue-400 z-0"></div>
+        <div className="absolute top-0 left-0 w-full h-24 bg-linear-to-r from-blue-500 to-blue-400 z-0"></div>
         <div className={`w-24 h-24 rounded-full p-1 z-10 mb-3 shadow-md relative ${isDarkMode ? 'bg-gray-800' : 'bg-white'}`}>
           <div className="w-full h-full bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
             {avatarURL && !imgError ? (
@@ -909,7 +924,7 @@ const ProfileView = ({ data, updateUserData, handleGoogleLogin, auth, isDarkMode
 
       {/* Login Promo if Guest */}
       {isGuest && (
-        <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-4 text-white shadow-lg mb-6 flex items-center justify-between">
+        <div className="bg-linear-to-r from-indigo-500 to-purple-600 rounded-2xl p-4 text-white shadow-lg mb-6 flex items-center justify-between">
           <div>
             <h3 className="font-bold">שמור את ההתקדמות שלך!</h3>
             <p className="text-xs text-indigo-100">התחבר כדי לא לאבד את הנתונים</p>
@@ -1214,7 +1229,7 @@ const IdiomGeneratorModal = ({ isOpen, onClose }) => {
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl w-full max-w-sm p-6 text-center relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-pink-500 to-rose-500"></div>
+        <div className="absolute top-0 left-0 w-full h-2 bg-linear-to-r from-pink-500 to-rose-500"></div>
         <button onClick={onClose} className="absolute top-4 left-4 text-gray-400 hover:text-gray-600">
           <X size={24} />
         </button>
@@ -1815,6 +1830,32 @@ const App = () => {
     setActiveTab('learn');
   };
 
+  const restartQuiz = () => {
+    setQuizState({
+      active: true,
+      currentQuestionIndex: 0,
+      score: 0,
+      showResult: false,
+      selectedAnswer: null,
+      completed: false
+    });
+  };
+
+  const hasNextLesson = React.useMemo(() => {
+    if (!currentLesson || !data || !data.lessons) return false;
+    const currentIndex = data.lessons.findIndex(l => l.id === currentLesson.id);
+    return currentIndex !== -1 && currentIndex < data.lessons.length - 1;
+  }, [currentLesson, data]);
+
+  const playNextLesson = () => {
+    if (!hasNextLesson) return;
+    const currentIndex = data.lessons.findIndex(l => l.id === currentLesson.id);
+    const nextLesson = data.lessons[currentIndex + 1];
+    if (nextLesson) {
+      startLesson(nextLesson);
+    }
+  };
+
   if (authLoading || (user && !data)) {
     return (
       <div className="h-screen flex items-center justify-center bg-gray-50 flex-col gap-4">
@@ -1842,7 +1883,7 @@ const App = () => {
         />}
       {activeTab === 'abc' && <AbcView setActiveTab={setActiveTab} isDarkMode={isDarkMode} />}
       {activeTab === 'numbers' && <NumberView setActiveTab={setActiveTab} isDarkMode={isDarkMode} />}
-      {activeTab === 'quiz' && <QuizView quizState={quizState} currentLesson={currentLesson} handleAnswer={handleAnswer} nextQuestion={nextQuestion} closeQuiz={closeQuiz} finishQuiz={finishQuiz} isDarkMode={isDarkMode} />}
+      {activeTab === 'quiz' && <QuizView quizState={quizState} currentLesson={currentLesson} handleAnswer={handleAnswer} nextQuestion={nextQuestion} closeQuiz={closeQuiz} finishQuiz={finishQuiz} restartQuiz={restartQuiz} playNextLesson={playNextLesson} hasNextLesson={hasNextLesson} isDarkMode={isDarkMode} />}
       {activeTab === 'reading' && (
         <ReadingView
           data={data || MOCK_DB}

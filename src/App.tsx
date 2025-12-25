@@ -46,7 +46,13 @@ const Navigation = ({ activeTab, setActiveTab, isDarkMode }) => (
   </div>
 );
 
-const HomeView = ({ data, startLesson, dailyTip, isTipLoading, fetchDailyTip, isDarkMode }) => (
+const HomeView = ({ data, startLesson, dailyTip, isTipLoading, fetchDailyTip, isDarkMode }) => {
+  const recommendedLesson = React.useMemo(() => {
+    const lessons = data.lessons || [];
+    return lessons.length > 0 ? lessons[Math.floor(Math.random() * lessons.length)] : null;
+  }, [data.lessons]);
+
+  return (
   <div className="p-6 space-y-6 pb-24 animate-fade-in">
     <header className="flex justify-between items-center">
       <div>
@@ -77,18 +83,19 @@ const HomeView = ({ data, startLesson, dailyTip, isTipLoading, fetchDailyTip, is
       </div>
     </div>
 
-    {/* TODO: Fix Dark Mode */}
-    <div className="space-y-3">
-      <h2 className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>מומלץ עבורך</h2>
-      <div onClick={() => startLesson(data.lessons[1])} className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4 space-x-reverse active:scale-95 transition-transform cursor-pointer`}>
-        <div className={`w-12 h-12 ${data.lessons[1].color || 'bg-gray-200'} rounded-full flex items-center justify-center text-2xl`}>{data.lessons[1].icon}</div>
-        <div className="flex-1">
-          <h3 className={`font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{data.lessons[1].title}</h3>
-          <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-800'}`}>10 מילים חדשות • 3 דקות</p>
+    {recommendedLesson && (
+      <div className="space-y-3">
+        <h2 className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>מומלץ עבורך</h2>
+        <div onClick={() => startLesson(recommendedLesson)} className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4 space-x-reverse active:scale-95 transition-transform cursor-pointer`}>
+          <div className={`w-12 h-12 ${recommendedLesson.color || 'bg-gray-200'} rounded-full flex items-center justify-center text-2xl`}>{recommendedLesson.icon}</div>
+          <div className="flex-1">
+            <h3 className={`font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>{recommendedLesson.title}</h3>
+            <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-800'}`}>10 מילים חדשות • 3 דקות</p>
+          </div>
+          <ChevronLeft className="text-gray-300 rotate-180" />
         </div>
-        <ChevronLeft className="text-gray-300 rotate-180" />
       </div>
-    </div>
+    )}
 
     <div className="space-y-3">
       <h2 className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>סטטיסטיקה</h2>
@@ -105,8 +112,9 @@ const HomeView = ({ data, startLesson, dailyTip, isTipLoading, fetchDailyTip, is
         </div>
       </div>
     </div>
-  </div >
-);
+  </div>
+  );
+};
 
 const LearnView = ({ data, startLesson, setActiveTab, setShowWritingModal, handleGenerateQuiz, isGeneratingQuiz, setShowGrammarModal, handleGenerateIdiom, isDarkMode }) => {
   const [quizTopic, setQuizTopic] = useState('');

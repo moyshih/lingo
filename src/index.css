@@ -81,6 +81,18 @@ textarea::placeholder {
   /* Tailwind gray-400 */
 }
 
+/* Dark mode styles for form controls */
+.dark input,
+.dark textarea,
+.dark select {
+    color: #F9FAFB; /* Tailwind gray-50 / readable on dark */
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+    color: #6B7280; /* Tailwind gray-500 */
+}
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;

@@ -79,7 +79,7 @@ const HomeView = ({ data, startLesson, dailyTip, isTipLoading, fetchDailyTip, is
 
     {/* TODO: Fix Dark Mode */}
     <div className="space-y-3">
-      <h2 className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>סטטיסטיקה</h2>
+      <h2 className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>מומלץ עבורך</h2>
       <div onClick={() => startLesson(data.lessons[1])} className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'} p-4 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4 space-x-reverse active:scale-95 transition-transform cursor-pointer`}>
         <div className={`w-12 h-12 ${data.lessons[1].color || 'bg-gray-200'} rounded-full flex items-center justify-center text-2xl`}>{data.lessons[1].icon}</div>
         <div className="flex-1">
@@ -1817,7 +1817,7 @@ const App = () => {
   }
 
   return (
-    <div className={`min-h-screen font-sans text-right transition-colors ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-800'}`} dir="rtl">
+    <div className={`min-h-screen font-sans text-right transition-colors ${isDarkMode ? 'dark bg-gray-900 text-white' : 'bg-gray-50 text-gray-800'}`} dir="rtl">
       {activeTab === 'home' && <HomeView data={data || MOCK_DB} startLesson={startLesson} dailyTip={dailyTip} isTipLoading={isTipLoading} fetchDailyTip={fetchDailyTip} isDarkMode={isDarkMode} />}
       {activeTab === 'learn' &&
         <LearnView

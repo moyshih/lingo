@@ -6,6 +6,7 @@ import { signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut, 
 import { getFirestore, doc, setDoc, onSnapshot, collection } from 'firebase/firestore';
 import firebaseApp, { auth as firebaseAuth } from './firebase';
 import { MOCK_DB, ACHIEVEMENTS, CHAT_SCENARIOS } from './assets/mockData/mockData';
+import MemoryGame from './MemoryGame';
 
 const ClickableWord = ({ word, translation, isActive, isHighlighted, onClick, onMouseEnter, onMouseLeave, isDarkMode }) => {
   return (
@@ -40,6 +41,7 @@ const Navigation = ({ activeTab, setActiveTab, isDarkMode }) => (
   <div className={`fixed bottom-0 w-full border-t pb-safe flex justify-around items-center h-16 z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] transition-colors ${isDarkMode ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'}`}>
     <button onClick={() => setActiveTab('home')} className={`flex flex-col items-center p-2 transition-colors ${activeTab === 'home' ? 'text-blue-500' : isDarkMode ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'}`}><Home size={24} /><span className="text-xs mt-1 font-medium">בית</span></button>
     <button onClick={() => setActiveTab('learn')} className={`flex flex-col items-center p-2 transition-colors ${activeTab === 'learn' || activeTab === 'abc' ? 'text-blue-500' : isDarkMode ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'}`}><Book size={24} /><span className="text-xs mt-1 font-medium">לימוד</span></button>
+    <button onClick={() => setActiveTab('memory')} className={`flex flex-col items-center p-2 transition-colors ${activeTab === 'memory' ? 'text-blue-500' : isDarkMode ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'}`}><Zap size={24} /><span className="text-xs mt-1 font-medium">משחק</span></button>
     <button onClick={() => { setActiveTab('reading'); }} className={`flex flex-col items-center p-2 transition-colors ${activeTab === 'reading' ? 'text-blue-500' : isDarkMode ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'}`}><BookOpen size={24} /><span className="text-xs mt-1 font-medium">קריאה</span></button>
     <button onClick={() => setActiveTab('chat')} className={`flex flex-col items-center p-2 transition-colors ${activeTab === 'chat' ? 'text-blue-500' : isDarkMode ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'}`}><MessageCircle size={24} /><span className="text-xs mt-1 font-medium">צ'אט AI</span></button>
     <button onClick={() => setActiveTab('profile')} className={`flex flex-col items-center p-2 transition-colors ${activeTab === 'profile' ? 'text-blue-500' : isDarkMode ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'}`}><User size={24} /><span className="text-xs mt-1 font-medium">פרופיל</span></button>
@@ -1041,28 +1043,28 @@ const GrammarLabModal = ({ isOpen, onClose }) => {
     try {
       const apiKey = "";
       const prompt = `
-              Analyze this English sentence for a Hebrew speaker: "${sentence}"
-              Return a JSON object with the following structure:
-              {
-                "isCorrect": boolean,
-                "corrected": "The fully corrected sentence",
-                "tense": "Grammatical tense",
-                "explanation": "Hebrew explanation",
-                "breakdown": [{"word": "word", "role": "POS", "hebrew": "trans"}],
-                "diff": [
-                  {"text": "segment text", "type": "neutral" | "removed" | "added"}
-                ]
+        Analyze this English sentence for a Hebrew speaker: "${sentence}"
+        Return a JSON object with the following structure:
+        {
+          "isCorrect": boolean,
+        "corrected": "The fully corrected sentence",
+        "tense": "Grammatical tense",
+        "explanation": "Hebrew explanation",
+        "breakdown": [{"word": "word", "role": "POS", "hebrew": "trans"}],
+        "diff": [
+        {"text": "segment text", "type": "neutral" | "removed" | "added"}
+        ]
               }
-              For 'diff', break the original and corrected sentences into segments to show changes.
-              Example: Original "I has cat", Corrected "I have a cat"
-              Diff: [
-                {"text": "I", "type": "neutral"},
-                {"text": "has", "type": "removed"},
-                {"text": "have", "type": "added"},
-                {"text": "a", "type": "added"},
-                {"text": "cat", "type": "neutral"}
-              ]
-            `;
+        For 'diff', break the original and corrected sentences into segments to show changes.
+        Example: Original "I has cat", Corrected "I have a cat"
+        Diff: [
+        {"text": "I", "type": "neutral"},
+        {"text": "has", "type": "removed"},
+        {"text": "have", "type": "added"},
+        {"text": "a", "type": "added"},
+        {"text": "cat", "type": "neutral"}
+        ]
+        `;
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1196,16 +1198,16 @@ const IdiomGeneratorModal = ({ isOpen, onClose }) => {
     try {
       const apiKey = "";
       const prompt = `
-                Generate a random, useful English idiom.
-                Return JSON:
-                {
-                    "idiom": "The idiom",
-                    "meaning": "Meaning in Hebrew",
-                    "example": "Example sentence in English",
-                    "exampleTranslation": "Translation of the example sentence in Hebrew",
-                    "origin": "Short origin story or fun fact in Hebrew"
+        Generate a random, useful English idiom.
+        Return JSON:
+        {
+          "idiom": "The idiom",
+        "meaning": "Meaning in Hebrew",
+        "example": "Example sentence in English",
+        "exampleTranslation": "Translation of the example sentence in Hebrew",
+        "origin": "Short origin story or fun fact in Hebrew"
                 }
-            `;
+        `;
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1293,16 +1295,16 @@ const WritingCoachModal = ({ isOpen, onClose }) => {
     try {
       const apiKey = "";
       const prompt = `
-                Act as an English teacher for Hebrew speakers.
-                I will give you a text written by a student on the topic: "${topic}".
-                Analyze it. Return a JSON with:
-                {
-                    "score": number (1-10),
-                    "feedback": "Hebrew explanation of mistakes and grammar tips",
-                    "improved": "Better English version of the text"
+        Act as an English teacher for Hebrew speakers.
+        I will give you a text written by a student on the topic: "${topic}".
+        Analyze it. Return a JSON with:
+        {
+          "score": number (1-10),
+        "feedback": "Hebrew explanation of mistakes and grammar tips",
+        "improved": "Better English version of the text"
                 }
-                Student Text: "${userText}"
-             `;
+        Student Text: "${userText}"
+        `;
 
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
         method: 'POST',
@@ -1691,21 +1693,21 @@ const App = () => {
       const apiKey = "";
       const prompt = `
         Create a short English story (5-6 sentences) about "${genTopic}" suitable for ${genLevel} level learners.
-        
+
         Strictly return ONLY a valid JSON object with this structure (no markdown formatting):
         {
           "title": "Story Title",
-          "heTitle": "Hebrew Title",
-          "content": [
-            { "w": "Word", "t": "Hebrew Translation", "phraseId": "optional_id_for_phrases" }
-          ]
+        "heTitle": "Hebrew Title",
+        "content": [
+        {"w": "Word", "t": "Hebrew Translation", "phraseId": "optional_id_for_phrases" }
+        ]
         }
-        
+
         Rules for content:
         1. Split the text into individual words or punctuation marks.
         2. Provide Hebrew translation for EACH word in context.
         3. Identify phrasal verbs or common phrases (like "wake up", "thank you"). For these, give both words the SAME 'phraseId' and the SAME full meaning in 't'.
-      `;
+        `;
 
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
         method: 'POST',
@@ -1751,17 +1753,17 @@ const App = () => {
     try {
       const apiKey = "";
       const prompt = `
-            Create a vocabulary quiz about "${topic}" for English learners.
-            Generate 5 questions.
-            Return ONLY a valid JSON object with this structure:
-            {
-                "id": "quiz_${Date.now()}",
-                "title": "Quiz: ${topic}",
-                "words": [
-                    { "id": 1, "en": "Word to translate", "he": "Correct Hebrew Translation", "options": ["Wrong 1", "Correct Hebrew Translation", "Wrong 2", "Wrong 3"] }
-                ]
+        Create a vocabulary quiz about "${topic}" for English learners.
+        Generate 5 questions.
+        Return ONLY a valid JSON object with this structure:
+        {
+          "id": "quiz_${Date.now()}",
+        "title": "Quiz: ${topic}",
+        "words": [
+        {"id": 1, "en": "Word to translate", "he": "Correct Hebrew Translation", "options": ["Wrong 1", "Correct Hebrew Translation", "Wrong 2", "Wrong 3"] }
+        ]
             }
-            Shuffle the correct answer in options.
+        Shuffle the correct answer in options.
         `;
 
       const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
@@ -1884,6 +1886,7 @@ const App = () => {
       {activeTab === 'abc' && <AbcView setActiveTab={setActiveTab} isDarkMode={isDarkMode} />}
       {activeTab === 'numbers' && <NumberView setActiveTab={setActiveTab} isDarkMode={isDarkMode} />}
       {activeTab === 'quiz' && <QuizView quizState={quizState} currentLesson={currentLesson} handleAnswer={handleAnswer} nextQuestion={nextQuestion} closeQuiz={closeQuiz} finishQuiz={finishQuiz} restartQuiz={restartQuiz} playNextLesson={playNextLesson} hasNextLesson={hasNextLesson} isDarkMode={isDarkMode} />}
+      {activeTab === 'memory' && <MemoryGame isDarkMode={isDarkMode} />}
       {activeTab === 'reading' && (
         <ReadingView
           data={data || MOCK_DB}
